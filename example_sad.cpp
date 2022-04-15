@@ -8,21 +8,26 @@
 using std::cout;
 using std::vector;
 
-int main(){
-    auto x=sad::Variable(5.);
-    auto y=sad::Variable(1.);
-    auto expr=sad::Variable(0);
 
-    expr = y*sad::Variable(2) +x ;
+using LD=double;
+
+int main(){
+    auto x=sad::Variable<LD>(1.);
+    auto y=sad::Variable<LD>(2.);
+    auto expr=sad::Variable<LD>(0);
+
+    expr = x + y ;
 
     cout<< expr<<"\n";
     cout<< expr->der(x)<<"\n";
     cout<< expr->der(y)<<"\n";
 
-    expr = expr + y*y;
+    expr =  y*y;
 
     cout<< expr->der(y)->der(x)<<"\n";
     cout<< expr->der(y)->der(y)<<"\n";
+
+
 
 
     return 0;

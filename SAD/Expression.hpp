@@ -1,5 +1,5 @@
-#ifndef Expression_H
-#define Expression_H
+#ifndef ExpressionType_H
+#define ExpressionType_H
 
 #include<memory>
 #include<SAD/declarations.hpp>
@@ -7,14 +7,15 @@
 
 namespace sad{
 
-class Expression{
+
+template<typename numType>
+class ExpressionType{
 
     public:
-    Expression()=default;
-    virtual double eval() const =0;
-    virtual std::shared_ptr<Expression> der(std::shared_ptr<Expression> &wrt) const =0;
-
-    friend std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Expression> &Expr){
+    ExpressionType()=default;
+    virtual numType eval() const =0;
+    virtual Expression<numType> der(Expression<numType> &wrt) const =0;
+    friend std::ostream& operator<<(std::ostream& os, const Expression<numType> &Expr){
         os << Expr->eval() ;
         return os;
     }
@@ -22,21 +23,25 @@ class Expression{
 
 };
 
-
-class VariableType:public Expression{
-    double val;
+template<typename numType>
+class VariableType:public ExpressionType<numType>{
+    numType val;
     
     public:
-    VariableType(const double &val):val(val){}
+    VariableType():val(0){}
+    VariableType(const numType &val):val(val){}
     
-    double eval() const {return val;}
+    numType eval() const {return val;}
+    numType & eval() {return val;}
     
-    std::shared_ptr<Expression> der(std::shared_ptr<Expression> &wrt) const {
-        if(wrt.get()==this){return Variable(1);}
-        return Variable(0);
+    Expression<numType> der(Expression<numType> &wrt) const {
+        if(wrt.get()==this){return Variable<numType>( static_cast<numType>(1) );}
+        return Variable<numType>(static_cast<numType>(0));
     }
 };
-std::shared_ptr<Expression> Variable(const double &x){return std::shared_ptr<Expression>(new VariableType(x));}
+
+template<typename numType>
+Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
 
 
 }

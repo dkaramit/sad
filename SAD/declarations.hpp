@@ -6,10 +6,23 @@
 
 namespace sad{
 
-class Expression;
-std::shared_ptr<Expression> Variable(const double &x);
-std::shared_ptr<Expression> operator+(const std::shared_ptr<Expression> &, const std::shared_ptr<Expression> &);
-std::shared_ptr<Expression> operator*(const std::shared_ptr<Expression> &, const std::shared_ptr<Expression> &);
+
+template<typename numType>
+class ExpressionType;
+
+template<typename numType>
+using Expression = std::shared_ptr<ExpressionType<numType>>;
+
+
+template<typename numType>
+Expression<numType> Variable(const numType &x);
+
+template<typename numType>
+Expression<numType> operator+(const Expression<numType> &, const Expression<numType> &);
+
+template<typename numType>
+Expression<numType> operator*(const Expression<numType> &, const Expression<numType> &);
+
 
 }
 

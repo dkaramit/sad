@@ -7,28 +7,32 @@
 
 namespace sad{
 
-struct Addition:Expression{
-    const std::shared_ptr<Expression> LHS,RHS;
-    Addition(const std::shared_ptr<Expression> &LHS, const std::shared_ptr<Expression> &RHS):LHS(LHS),RHS(RHS){};
+template<typename numType>
+struct Addition:ExpressionType<numType>{
+    const Expression<numType> LHS,RHS;
+    Addition(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
     double eval() const {return LHS->eval() + RHS->eval();}
     
-    std::shared_ptr<Expression> der(std::shared_ptr<Expression> &wrt) const {return LHS->der(wrt) + RHS->der(wrt) ;}
+    Expression<numType> der(Expression<numType> &wrt) const {return LHS->der(wrt) + RHS->der(wrt) ;}
 
 };
 
-struct Multiplication:Expression{
-    const std::shared_ptr<Expression> LHS,RHS;
-    Multiplication(const std::shared_ptr<Expression> &LHS, const std::shared_ptr<Expression> &RHS):LHS(LHS),RHS(RHS){};
+template<typename numType>
+struct Multiplication:ExpressionType<numType>{
+    const Expression<numType> LHS,RHS;
+    Multiplication(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
     double eval() const {return LHS->eval() * RHS->eval();}
     
-    std::shared_ptr<Expression> der(std::shared_ptr<Expression> &wrt) const {
+    Expression<numType> der(Expression<numType> &wrt) const {
         return (LHS * RHS->der(wrt)) + (RHS * LHS->der(wrt));
     }
 
 };
 
-std::shared_ptr<Expression> operator+(const std::shared_ptr<Expression> &LHS, const std::shared_ptr<Expression> &RHS){return std::shared_ptr<Expression>( new Addition(LHS,RHS) ); }
-std::shared_ptr<Expression> operator*(const std::shared_ptr<Expression> &LHS, const std::shared_ptr<Expression> &RHS){return std::shared_ptr<Expression>( new Multiplication(LHS,RHS) ); }
+template<typename numType>
+Expression<numType> operator+(const Expression<numType> &LHS, const Expression<numType> &RHS){return Expression<numType>( new Addition<numType>(LHS,RHS) ); }
+template<typename numType>
+Expression<numType> operator*(const Expression<numType> &LHS, const Expression<numType> &RHS){return Expression<numType>( new Multiplication<numType>(LHS,RHS) ); }
 
 
 }
