@@ -40,13 +40,6 @@ class VariableType:public ExpressionType<numType>{
     }
 };
 
-template<typename numType>
-Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
-
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
 
 }
 #endif

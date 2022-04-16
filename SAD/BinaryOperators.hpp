@@ -1,9 +1,9 @@
 #ifndef BinOp_H
 #define BinOp_H
 
-#include<SAD/declarations.hpp>
-#include<SAD/Expression.hpp>
 #include <cmath> 
+
+#include<SAD/declarations.hpp>
 
 
 namespace sad{
@@ -59,21 +59,12 @@ struct Pow:ExpressionType<numType>{
     }
 };
 
-template<typename numType>
-Expression<numType> operator+(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,Addition<numType>>(LHS,RHS); }
 
-template<typename numType>
-Expression<numType> operator*(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,Multiplication<numType>>(LHS,RHS); }
-
-template<typename numType>
-Expression<numType> operator-(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,Subtruction<numType>>(LHS,RHS); }
-
-template<typename numType>
-Expression<numType> operator/(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,Division<numType>>(LHS,RHS); }
-
-template<typename numType>
-Expression<numType> pow(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,Pow<numType>>(LHS,RHS) ;}
-
+DefineNewBinaryOperator(operator+,Addition)
+DefineNewBinaryOperator(operator*,Multiplication)
+DefineNewBinaryOperator(operator-,Subtruction)
+DefineNewBinaryOperator(operator/,Division)
+DefineNewBinaryOperator(pow,Pow)
 
 }
 

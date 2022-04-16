@@ -1,7 +1,6 @@
 #ifndef UnOp_H
 #define UnOp_H
 
-#include <valarray> 
 #include <cmath> 
 
 #include<SAD/declarations.hpp>
@@ -64,54 +63,15 @@ struct Cos:ExpressionType<numType>{
 
 
 
-template<typename numType>
-Expression<numType> operator-(const Expression<numType> &Expr){return newExpression<numType,Neg<numType>>( Expr );}
-
-template<typename numType>
-Expression<numType> exp(const Expression<numType> &Expr){return newExpression<numType,Exp<numType>>( Expr );}
-
-template<typename numType>
-Expression<numType> log(const Expression<numType> &Expr){return newExpression<numType,Log<numType>>( Expr );}
-
-template<typename numType>
-Expression<numType> sin(const Expression<numType> &Expr){return newExpression<numType,Sin<numType>>( Expr );}
-
-template<typename numType>
-Expression<numType> cos(const Expression<numType> &Expr){return newExpression<numType,Cos<numType>>( Expr );}
+DefineNewUnaryOperator(operator-,Neg)
+DefineNewUnaryOperator(exp,Exp)
+DefineNewUnaryOperator(log,Log)
+DefineNewUnaryOperator(sin,Sin)
+DefineNewUnaryOperator(cos,Cos)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-template<typename numType>
-Expression<numType> derivative(const Expression<numType> &Expr, const Expression<numType> &wrt){return Expr -> der(wrt);}
-
-template<typename numType>
-Expression<numType> derivative(const Expression<numType> &Expr, const std::valarray<Expression<numType>> &wrt){
-    std::valarray<Expression<numType>>  tail = wrt[ std::slice(1, wrt.size() - 1, 1) ];
-    if(wrt.size() == 1 ){return Expr -> der(wrt[0]) ; }
-    return  derivative(Expr -> der(wrt[0]), tail ) ;
-}
-
-template<typename numType>
-auto evaluate(const Expression<numType> &Expr){return Expr->eval();}
 
 
 }
