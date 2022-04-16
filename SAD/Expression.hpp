@@ -33,8 +33,7 @@ class VariableType:public ExpressionType<numType>{
     VariableType(const numType &val):val(val){}
     
     numType eval() const {return val;}
-    numType & eval() {return val;}
-    
+
     Expression<numType> der(const Expression<numType> &wrt) const {
         if(wrt.get()==this){return Variable<numType>(1);}
         return Variable<numType>(0);
@@ -44,6 +43,10 @@ class VariableType:public ExpressionType<numType>{
 template<typename numType>
 Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
 
+template<typename numType, typename ExprType>
+Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
+template<typename numType, typename ExprType>
+Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
 
 }
 #endif

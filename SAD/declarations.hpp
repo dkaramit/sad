@@ -15,8 +15,11 @@ using Expression = std::shared_ptr<ExpressionType<numType>>;
 
 
 template<typename numType>
-Expression<numType> Variable(const numType &x);
-
+Expression<numType> Variable(const numType &);
+template<typename numType, typename ExprType>
+Expression<numType> newExpression(const Expression<numType> &);
+template<typename numType, typename ExprType>
+Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS);
 }
 
 
