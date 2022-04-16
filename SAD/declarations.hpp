@@ -3,41 +3,50 @@
 #include <valarray> 
 
 /*These macros make the definition of new operators easier*/
-#define DefineNewBinaryOperator(op,expr) template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(LHS,RHS); }
-#define DefineNewUnaryOperator(op,expr)template<typename numType> Expression<numType> op(const Expression<numType> &Expr){return newExpression<numType,expr<numType>>( Expr );}
+#define DefineBinaryOperatorClass(name,evalFunc,derivFunc)template<typename numType>\
+    struct name:ExpressionType<numType>{ \
+        const Expression<numType> LHS,RHS; \
+        name(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){}; \
+        numType eval() const {return evalFunc;} \
+        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+    };
+
+#define DefineUnaryOperatorClass(name,evalFunc,derivFunc)template<typename numType>\
+    struct name:ExpressionType<numType>{ \
+        const Expression<numType> Expr; \
+        name(const Expression<numType> &Expr):Expr(Expr){}; \
+        numType eval() const {return evalFunc;} \
+        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+    };
+
+
+#define DefineBinaryOperator(op,expr) template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(LHS,RHS); }
+#define DefineUnaryOperator(op,expr)template<typename numType> Expression<numType> op(const Expression<numType> &Expr){return newExpression<numType,expr<numType>>( Expr );}
+
+
 
 namespace sad{
 
 
-template<typename numType>
-class ExpressionType;
-template<typename numType>
-class VariableType;
+template<typename numType>class ExpressionType;
+template<typename numType>class VariableType;
 
-template<typename numType>
-using Expression = std::shared_ptr<ExpressionType<numType>>;
+template<typename numType>using Expression = std::shared_ptr<ExpressionType<numType>>;
 
 
-template<typename numType>
-Expression<numType> Variable(const numType &);
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &);
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS);
+template<typename numType>Expression<numType> Variable(const numType &);
+template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &);
+template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS);
 
 
 /*functions that can be used to declare variables and expressions easier (it is better to hide the fact tha everything is a pointer, behind these functions)*/
-template<typename numType>
-Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
-template<typename numType, typename ExprType>
-Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
+template<typename numType>Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
+template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
+template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
 
 
 /*functions to get the derivates and evaluate the expressions*/
-template<typename numType>
-Expression<numType> derivative(const Expression<numType> &Expr, const Expression<numType> &wrt){return Expr -> der(wrt);}
+template<typename numType>Expression<numType> derivative(const Expression<numType> &Expr, const Expression<numType> &wrt){return Expr -> der(wrt);}
 
 template<typename numType>
 Expression<numType> derivative(const Expression<numType> &Expr, const std::valarray<Expression<numType>> &wrt){
@@ -46,8 +55,7 @@ Expression<numType> derivative(const Expression<numType> &Expr, const std::valar
     return  derivative(Expr -> der(wrt[0]), tail ) ;
 }
 
-template<typename numType>
-auto evaluate(const Expression<numType> &Expr){return Expr->eval();}
+template<typename numType> auto evaluate(const Expression<numType> &Expr){return Expr->eval();}
 }
 
 

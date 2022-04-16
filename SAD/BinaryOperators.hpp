@@ -8,45 +8,7 @@
 
 namespace sad{
 
-template<typename numType>
-struct Addition:ExpressionType<numType>{
-    const Expression<numType> LHS,RHS;
-    Addition(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
-    numType eval() const {return LHS->eval() + RHS->eval();}
-    
-    Expression<numType> der(const Expression<numType> &wrt) const {return LHS->der(wrt) + RHS->der(wrt) ;}
-
-};
-template<typename numType>
-struct Subtruction:ExpressionType<numType>{
-    const Expression<numType> LHS,RHS;
-    Subtruction(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
-    numType eval() const {return LHS->eval() - RHS->eval();}
-    Expression<numType> der(const Expression<numType> &wrt) const {return LHS->der(wrt) - RHS->der(wrt) ;}
-};
-
-
-
-template<typename numType>
-struct Multiplication:ExpressionType<numType>{
-    const Expression<numType> LHS,RHS;
-    Multiplication(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
-    numType eval() const {return LHS->eval() * RHS->eval();}
-    Expression<numType> der(const Expression<numType> &wrt) const {
-        return (LHS * RHS->der(wrt)) + (RHS * LHS->der(wrt));
-    }
-};
-
-template<typename numType>
-struct Division:ExpressionType<numType>{
-    const Expression<numType> LHS,RHS;
-    Division(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
-    numType eval() const {return LHS->eval() / RHS->eval();}
-    Expression<numType> der(const Expression<numType> &wrt) const {
-        return LHS->der(wrt)/RHS - LHS*(RHS->der(wrt))/(RHS*RHS) ;
-    }
-};
-
+/*I don't use the macro, because the derivative is a bit more complicated*/
 template<typename numType>
 struct Pow:ExpressionType<numType>{
     const Expression<numType> LHS,RHS;
@@ -59,12 +21,16 @@ struct Pow:ExpressionType<numType>{
     }
 };
 
+DefineBinaryOperatorClass(Addition,( LHS->eval() + RHS->eval() ),( LHS->der(wrt) +RHS->der(wrt) ))
+DefineBinaryOperatorClass(Subtruction,( LHS->eval() - RHS->eval() ),( LHS->der(wrt)-RHS->der(wrt) ))
+DefineBinaryOperatorClass(Multiplication,( LHS->eval() * RHS->eval() ),( LHS * RHS->der(wrt) + RHS * LHS->der(wrt) ))
+DefineBinaryOperatorClass(Division,( LHS->eval() / RHS->eval() ),( LHS->der(wrt)/RHS - LHS*(RHS->der(wrt))/(RHS*RHS) ))
 
-DefineNewBinaryOperator(operator+,Addition)
-DefineNewBinaryOperator(operator*,Multiplication)
-DefineNewBinaryOperator(operator-,Subtruction)
-DefineNewBinaryOperator(operator/,Division)
-DefineNewBinaryOperator(pow,Pow)
+DefineBinaryOperator(operator+,Addition)
+DefineBinaryOperator(operator*,Multiplication)
+DefineBinaryOperator(operator-,Subtruction)
+DefineBinaryOperator(operator/,Division)
+DefineBinaryOperator(pow,Pow)
 
 }
 
