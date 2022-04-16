@@ -1,5 +1,3 @@
-// Example on how to generate expressions and types for sadET
-
 #include<iostream>
 #include<memory>
 #include<vector>
@@ -15,10 +13,17 @@ using LD=double;
 auto f(sad::Expression<LD> x,sad::Expression<LD> y){return sad::exp(-x*x*y-y) / x - sad::pow(sad::log(x),y) +sad::sin(x);}
 
 int main(){
+    //this is how you define a variable. 
+    // It creates a shared pointer Expression<numType>(new VariableType<numType>(1.2)), 
+    // where  VariableType is the "true" type of the Variables. But I chose this, in order for everything to be a pointer.
     auto x=sad::Variable<LD>(1.2);
-
     auto y=sad::Variable<LD>(3.14159);
+
+    // this is one way to define an expression.
+    // this is equivalent to std::shared_ptr<ExpressionType<numType>> expr();
+    // However, this looks better in my opinion.
     auto expr=sad::Expression<LD>();
+    // You could have defined it as Variable, or via expr = x (or any other way; eg decltype(x+x) expr; ). It doesn't matter.
     
     
     cout<<x<<"\n";

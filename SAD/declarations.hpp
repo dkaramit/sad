@@ -38,11 +38,6 @@ template<typename numType>class VariableType;
 template<typename numType>using Expression = std::shared_ptr<ExpressionType<numType>>;
 
 
-template<typename numType>Expression<numType> Variable(const numType &);
-template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &);
-template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS);
-
-
 /*functions that can be used to declare variables and expressions easier (it is better to hide the fact tha everything is a pointer, behind these functions)*/
 template<typename numType>Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
