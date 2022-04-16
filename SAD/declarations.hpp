@@ -3,25 +3,29 @@
 #include <valarray> 
 
 /*These macros make the definition of new operators easier*/
-#define DefineBinaryOperatorClass(name,evalFunc,derivFunc)template<typename numType>\
-    struct name:ExpressionType<numType>{ \
-        const Expression<numType> LHS,RHS; \
-        name(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){}; \
-        numType eval() const {return evalFunc;} \
-        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
-    };
-
-#define DefineUnaryOperatorClass(name,evalFunc,derivFunc)template<typename numType>\
-    struct name:ExpressionType<numType>{ \
-        const Expression<numType> Expr; \
-        name(const Expression<numType> &Expr):Expr(Expr){}; \
-        numType eval() const {return evalFunc;} \
-        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
-    };
-
-
 #define DefineBinaryOperator(op,expr) template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(LHS,RHS); }
+
+#define DefineBinaryOperatorClass(Operator,ClassName,evalFunc,derivFunc)template<typename numType>\
+    struct ClassName:ExpressionType<numType>{ \
+        const Expression<numType> LHS,RHS; \
+        ClassName(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){}; \
+        numType eval() const {return evalFunc;} \
+        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+    };\
+    DefineBinaryOperator(Operator,ClassName)
+
+
 #define DefineUnaryOperator(op,expr)template<typename numType> Expression<numType> op(const Expression<numType> &Expr){return newExpression<numType,expr<numType>>( Expr );}
+#define DefineUnaryOperatorClass(Operator,ClassName,evalFunc,derivFunc)template<typename numType>\
+    struct ClassName:ExpressionType<numType>{ \
+        const Expression<numType> Expr; \
+        ClassName(const Expression<numType> &Expr):Expr(Expr){}; \
+        numType eval() const {return evalFunc;} \
+        Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+    };\
+    DefineUnaryOperator(Operator,ClassName)
+
+
 
 
 

@@ -43,6 +43,13 @@ int main(){
     for(size_t i=0; i<10; ++i){expr=expr*f(x,y);}
     cout<<sad::derivative(expr,{y,x,x,x,x})<<"\n";
 
+    /*You can't do this in sadET either (the two branches have different type)*/
+    auto g = [&](sad::Expression<LD> x,sad::Expression<LD> y){return  sad::evaluate(x)>sad::evaluate(y) ? x*x / y: -y*x;};
+    cout<<sad::derivative(g(x,y),{x,y})<<"\n";
+    
+    x = sad::Variable<LD>(3.14159) ;
+    y = sad::Variable<LD>(1.3) ;
+    cout<<sad::derivative(g(x,y),{x,y})<<"\n";
 
 
     return 0;

@@ -8,24 +8,12 @@
 
 namespace sad{
 
-
-
-
-template<typename numType> struct Cos;//we need this declaration, because it is referenced in the Sin struct 
-DefineUnaryOperatorClass(Sin,std::sin(Expr->eval()),(  (Expr->der(wrt))*newExpression<numType,Cos<numType>>(Expr) ))
-DefineUnaryOperatorClass(Cos,std::cos(Expr->eval()),( -(Expr->der(wrt))*newExpression<numType,Sin<numType>>(Expr) ))
-DefineUnaryOperatorClass(Log,std::log(Expr->eval()),(   Expr->der(wrt)/Expr ))
-DefineUnaryOperatorClass(Exp,std::exp(Expr->eval()),( newExpression<numType,Exp<numType>>( Expr ) * (Expr->der(wrt)) ))
-DefineUnaryOperatorClass(Neg, -1*(Expr->eval()) ,( - (Expr->der(wrt)) ))
-
-
-
-DefineUnaryOperator(operator-,Neg)
-DefineUnaryOperator(exp,Exp)
-DefineUnaryOperator(log,Log)
-DefineUnaryOperator(sin,Sin)
-DefineUnaryOperator(cos,Cos)
-
+template<typename numType> struct Cos;//we need this declaration, because Cos referenced in the Sin struct 
+DefineUnaryOperatorClass(sin,Sin,std::sin(Expr->eval()),(  (Expr->der(wrt))*newExpression<numType,Cos<numType>>(Expr) ))
+DefineUnaryOperatorClass(cos,Cos,std::cos(Expr->eval()),( -(Expr->der(wrt))*newExpression<numType,Sin<numType>>(Expr) ))
+DefineUnaryOperatorClass(log,Log,std::log(Expr->eval()),(   Expr->der(wrt)/Expr ))
+DefineUnaryOperatorClass(exp,Exp,std::exp(Expr->eval()),( newExpression<numType,Exp<numType>>( Expr ) * (Expr->der(wrt)) ))
+DefineUnaryOperatorClass(operator-,Neg, -Expr->eval() ,( - (Expr->der(wrt)) ))
 
 
 
