@@ -9,4 +9,8 @@ Simple Automatic Differentiation (in ```C++```)
 
 
 
-## Work in progress...
+## To-do:
+- [ ] Implement as many functions as possible.
+- [ ] Output to ![sadET](https://github.com/dkaramit/sadET). This will be useful since sadET uses expression templates.
+- [ ] Documentation.
+
