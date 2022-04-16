@@ -14,18 +14,16 @@ using LD=double;
 
 int main(){
     auto x=sad::Variable<LD>(1.);
-    auto y=sad::Variable<LD>(2.);
+    auto y=sad::Variable<LD>(2.6);
     auto expr=sad::Variable<LD>(0);
 
     expr = x;
+    cout<<D(expr,{x,x,x})<<"\n";
+    cout<<D(-expr,{x,x,x})<<"\n";
 
-    cout<< expr->der(x)<<"\n";
-    cout<< -expr<<"\n";
 
-    cout<< (expr)->der(x)<<"\n";
-    cout<< (-expr)->der(x)<<"\n";
-
-    cout<<D(expr,x)<<"\n";
+    expr = x*expr + y - y*x;
+    cout<<D(x*y*y*expr,{x,y,y})<<"\n";
 
     return 0;
 }

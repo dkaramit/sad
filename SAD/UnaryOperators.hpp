@@ -1,6 +1,8 @@
 #ifndef UnOp_H
 #define UnOp_H
 
+#include <valarray> 
+
 #include<SAD/declarations.hpp>
 #include<SAD/BinaryOperators.hpp>
 
@@ -21,8 +23,18 @@ Expression<numType> operator-(const Expression<numType> &Expr){return Expression
 
 
 template<typename numType>
-Expression<numType> D(const Expression<numType> &Expr, const Expression<numType>& wrt){
-    return  Expr -> der(wrt) ;
+Expression<numType> D(const Expression<numType> &Expr, const Expression<numType> &wrt){
+    return Expr -> der(wrt) ;
+}
+
+
+template<typename numType>
+Expression<numType> D(const Expression<numType> &Expr, const std::valarray<Expression<numType>> &wrt){
+    std::valarray<Expression<numType>>  tail = wrt[ std::slice(1, wrt.size() - 1, 1) ];
+    
+    if(wrt.size() == 1 ){return Expr -> der(wrt[0]) ; }
+    return  D(Expr -> der(wrt[0]), tail ) ;
+
 }
 
 
