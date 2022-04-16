@@ -14,12 +14,13 @@ class ExpressionType{
     public:
     ExpressionType()=default;
     virtual numType eval() const =0;
-    virtual Expression<numType> der(Expression<numType> &wrt) const =0;
+    
+    virtual Expression<numType> der(const Expression<numType> &wrt) const=0;
+
     friend std::ostream& operator<<(std::ostream& os, const Expression<numType> &Expr){
         os << Expr->eval() ;
         return os;
     }
-
 
 };
 
@@ -34,9 +35,9 @@ class VariableType:public ExpressionType<numType>{
     numType eval() const {return val;}
     numType & eval() {return val;}
     
-    Expression<numType> der(Expression<numType> &wrt) const {
-        if(wrt.get()==this){return Variable<numType>( static_cast<numType>(1) );}
-        return Variable<numType>(static_cast<numType>(0));
+    Expression<numType> der(const Expression<numType> &wrt) const {
+        if(wrt.get()==this){return Variable<numType>(1);}
+        return Variable<numType>(0);
     }
 };
 

@@ -17,13 +17,6 @@ using Expression = std::shared_ptr<ExpressionType<numType>>;
 template<typename numType>
 Expression<numType> Variable(const numType &x);
 
-template<typename numType>
-Expression<numType> operator+(const Expression<numType> &, const Expression<numType> &);
-
-template<typename numType>
-Expression<numType> operator*(const Expression<numType> &, const Expression<numType> &);
-
-
 }
 
 

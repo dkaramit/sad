@@ -9,6 +9,7 @@ using std::cout;
 using std::vector;
 
 
+
 using LD=double;
 
 int main(){
@@ -16,19 +17,15 @@ int main(){
     auto y=sad::Variable<LD>(2.);
     auto expr=sad::Variable<LD>(0);
 
-    expr = x + y ;
+    expr = x;
 
-    cout<< expr<<"\n";
     cout<< expr->der(x)<<"\n";
-    cout<< expr->der(y)<<"\n";
+    cout<< -expr<<"\n";
 
-    expr =  y*y;
+    cout<< (expr)->der(x)<<"\n";
+    cout<< (-expr)->der(x)<<"\n";
 
-    cout<< expr->der(y)->der(x)<<"\n";
-    cout<< expr->der(y)->der(y)<<"\n";
-
-
-
+    cout<<D(expr,x)<<"\n";
 
     return 0;
 }

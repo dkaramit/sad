@@ -13,7 +13,16 @@ struct Addition:ExpressionType<numType>{
     Addition(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
     double eval() const {return LHS->eval() + RHS->eval();}
     
-    Expression<numType> der(Expression<numType> &wrt) const {return LHS->der(wrt) + RHS->der(wrt) ;}
+    Expression<numType> der(const Expression<numType> &wrt) const {return LHS->der(wrt) + RHS->der(wrt) ;}
+
+};
+template<typename numType>
+struct Subtruction:ExpressionType<numType>{
+    const Expression<numType> LHS,RHS;
+    Subtruction(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
+    double eval() const {return LHS->eval() - RHS->eval();}
+    
+    Expression<numType> der(const Expression<numType> &wrt) const {return LHS->der(wrt) - RHS->der(wrt) ;}
 
 };
 
@@ -23,16 +32,27 @@ struct Multiplication:ExpressionType<numType>{
     Multiplication(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){};
     double eval() const {return LHS->eval() * RHS->eval();}
     
-    Expression<numType> der(Expression<numType> &wrt) const {
+    Expression<numType> der(const Expression<numType> &wrt) const {
         return (LHS * RHS->der(wrt)) + (RHS * LHS->der(wrt));
     }
 
 };
 
+
+
+
+
+
+
+
 template<typename numType>
 Expression<numType> operator+(const Expression<numType> &LHS, const Expression<numType> &RHS){return Expression<numType>( new Addition<numType>(LHS,RHS) ); }
+
 template<typename numType>
 Expression<numType> operator*(const Expression<numType> &LHS, const Expression<numType> &RHS){return Expression<numType>( new Multiplication<numType>(LHS,RHS) ); }
+
+template<typename numType>
+Expression<numType> operator-(const Expression<numType> &LHS, const Expression<numType> &RHS){return Expression<numType>( new Subtruction<numType>(LHS,RHS) ); }
 
 
 }

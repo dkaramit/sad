@@ -10,7 +10,7 @@ CC=g++
 OPT=-O3
 # STD=-std=c++11
 # STD=-std=c++14
-# STD=-std=c++17
+STD=-std=c++17
 
 FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall
 
