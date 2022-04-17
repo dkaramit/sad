@@ -21,12 +21,15 @@ struct Pow:ExpressionType<numType>{
     numType eval() const {return  std::pow(LHS->eval(),RHS->eval());}
     Expression<numType> der(const Expression<numType> &wrt) const {
         /*if the derivative of the RHS is zero, the logarithm should not appear!*/
-        if(RHS->der(wrt)->eval() == static_cast<numType>(0) ){return pow( LHS,RHS - Variable<numType>(1) ) * RHS*LHS->der(wrt);}
-        return  pow( LHS,RHS - Variable<numType>(1) ) * (RHS*LHS->der(wrt) + LHS*log(LHS)*RHS->der(wrt) );
+        if(RHS->der(wrt)->eval() == static_cast<numType>(0) ){return pow( LHS,RHS - One<numType> ) * RHS*LHS->der(wrt);}
+        return  pow( LHS,RHS - One<numType> ) * (RHS*LHS->der(wrt) + LHS*log(LHS)*RHS->der(wrt) );
     }
 };
 DefineBinaryOperator(pow,Pow)    
+DefineBinaryOperator(operator^,Pow)    
 
+template<typename numType>
+auto log(const Expression<numType> &LHS,const Expression<numType> &RHS){return log(RHS)/log(LHS);}
 
 
 

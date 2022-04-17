@@ -1,9 +1,16 @@
 #ifndef Declarations_H
 #define Declarations_H
+
+#include <string> 
 #include <valarray> 
+#include<type_traits>
+
 
 /*These macros make the definition of new operators easier*/
-#define DefineBinaryOperator(op,expr) template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(LHS,RHS); }
+#define DefineBinaryOperator(op,expr) \
+template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(LHS,RHS); }\
+template<typename numType> Expression<numType> op(const numType &LHS, const Expression<numType> &RHS){return newExpression<numType,expr<numType>>(Variable<numType>(LHS),RHS); }\
+template<typename numType> Expression<numType> op(const Expression<numType> &LHS, const numType &RHS){return newExpression<numType,expr<numType>>(LHS,Variable<numType>(RHS)); }
 
 #define DefineBinaryOperatorClass(Operator,ClassName,evalFunc,derivFunc)template<typename numType>\
     struct ClassName:ExpressionType<numType>{ \
@@ -32,6 +39,7 @@
 namespace sad{
 
 
+
 template<typename numType>class ExpressionType;
 template<typename numType>class VariableType;
 
@@ -42,6 +50,7 @@ template<typename numType>using Expression = std::shared_ptr<ExpressionType<numT
 template<typename numType>Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
+template<typename numType, typename ExprType>Expression<numType> newExpression(const numType &i, const Expression<numType> &Expr){ return Expression<numType>( new ExprType(i,Expr) );}
 
 
 /*functions to get the derivates and evaluate the expressions*/
