@@ -14,6 +14,7 @@ class ExpressionType{
     ExpressionType()=default;
     virtual numType eval() const =0;
     virtual Expression<numType> der(const Expression<numType> &wrt) const=0;
+    virtual void assign(const numType &val)=0;
     friend std::ostream& operator<<(std::ostream& os, const Expression<numType> &Expr){
         os << Expr->eval() ;
         return os;
@@ -27,6 +28,8 @@ class VariableType:public ExpressionType<numType>{
     VariableType():val(0){}
     VariableType(const numType &val):val(val){}
     numType eval() const {return val;}
+    void assign(const numType &val) {this->val=val;}
+
     Expression<numType> der(const Expression<numType> &wrt) const;
 };
 

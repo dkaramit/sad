@@ -24,6 +24,7 @@ struct Pow:ExpressionType<numType>{
         if(RHS->der(wrt)->eval() == static_cast<numType>(0) ){return pow( LHS,RHS - One<numType> ) * RHS*LHS->der(wrt);}
         return  pow( LHS,RHS - One<numType> ) * (RHS*LHS->der(wrt) + LHS*log(LHS)*RHS->der(wrt) );
     }
+    void assign(const numType &val){};
 };
 DefineBinaryOperator(pow,Pow)    
 template<typename numType> Expression<numType> pow(const numType &LHS, const numType &RHS){return  Variable<numType>( std::pow(LHS,RHS) ) ; }

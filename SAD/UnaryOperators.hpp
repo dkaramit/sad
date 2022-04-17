@@ -15,8 +15,9 @@ template<typename numType>
         Neg(const Expression<numType> &Expr):Expr(Expr){}; 
         numType eval() const {return -Expr->eval();} 
         Expression<numType> der(const Expression<numType> &wrt) const {return  - (Expr->der(wrt)) ;} 
+        void assign(const numType &val){};
 };
-template<typename numType> Expression<numType> operator-(const Expression<numType> &Expr){return newExpression<numType,Neg<numType>>( Expr );}\
+template<typename numType> Expression<numType> operator-(const Expression<numType> &Expr){return newExpression<numType,Neg<numType>>( Expr );}
 
 
 
@@ -61,12 +62,22 @@ struct BesselK:ExpressionType<numType>{
     Expression<numType> der(const Expression<numType> &wrt) const {
         return  -Half<numType>*(newExpression<numType,BesselK<argType,numType>>(i+1,Expr) + newExpression<numType,BesselK<argType,numType>>(i-1,Expr))*Expr->der(wrt) ;
     }
+    void assign(const numType &val){};
 };
 template<typename argType,typename numType>
 auto cyl_bessel_k(const argType &i, const Expression<numType> &Expr){return newExpression<numType,BesselK<argType,numType>>(i,Expr); }
 template<typename argType,typename numType>
-auto cyl_bessel_k(const argType &i, const numType &Expr){return Variable<numType>(std::cyl_bessel_k(i,Expr)) ; }
+auto cyl_bessel_k(const argType &i, const numType &Expr){return Variable<numType>(std::cyl_bessel_k(std::abs(i),Expr)) ; }
 
+template<typename numType>
+auto abs(const Expression<numType> &Expr){
+    if ( Expr->eval() == static_cast<numType>(0) ){return Variable<numType>(0); }
+    if ( Expr->eval() > static_cast<numType>(0) ){return Expr;}
+    return -Expr;
+ }
+
+template<typename numType>
+auto abs(const numType &x){return Variable<numType>(std::abs(x)); }
 
 }
 

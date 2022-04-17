@@ -14,6 +14,7 @@ template<typename numType> Expression<numType> op(const Expression<numType> &LHS
         ClassName(const Expression<numType> &LHS, const Expression<numType> &RHS):LHS(LHS),RHS(RHS){}; \
         numType eval() const {return evalFunc;} \
         Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+        void assign(const numType &val){};\
     };\
     DefineBinaryOperator(Operator,ClassName)
 
@@ -28,6 +29,7 @@ template<typename numType> Expression<numType> op(const numType &x){return Varia
         ClassName(const Expression<numType> &Expr):Expr(Expr){}; \
         numType eval() const {return evalFunc;} \
         Expression<numType> der(const Expression<numType> &wrt) const {return  derivFunc;} \
+        void assign(const numType &val){};\
     };\
     DefineUnaryOperator(Operator,ClassName)
 
@@ -47,6 +49,7 @@ template<typename numType>using Expression = std::shared_ptr<ExpressionType<numT
 
 /*functions that can be used to declare variables and expressions easier (it is better to hide the fact tha everything is a pointer, behind these functions)*/
 template<typename numType>Expression<numType> Variable(const numType &x){return Expression<numType>(new VariableType<numType>(x));}
+template<typename numType>Expression<numType> Variable(){return Expression<numType>(new VariableType<numType>());}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &Expr){ return Expression<numType>( new ExprType(Expr) );}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const Expression<numType> &LHS, const Expression<numType> &RHS){ return Expression<numType>( new ExprType(LHS,RHS) );}
 template<typename numType, typename ExprType>Expression<numType> newExpression(const numType &i, const Expression<numType> &Expr){ return Expression<numType>( new ExprType(i,Expr) );}
@@ -63,6 +66,9 @@ Expression<numType> derivative(const Expression<numType> &Expr, const std::valar
 }
 
 template<typename numType> auto evaluate(const Expression<numType> &Expr){return Expr->eval();}
+
+template<typename numType> auto assign(Expression<numType> &Expr, const numType &x){Expr->assign(x);}
+
 }
 
 
