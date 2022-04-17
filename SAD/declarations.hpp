@@ -1,10 +1,6 @@
 #ifndef Declarations_H
 #define Declarations_H
-
-#include <string> 
 #include <valarray> 
-#include<type_traits>
-
 
 /*These macros make the definition of new operators easier*/
 #define DefineBinaryOperator(op,expr) \
