@@ -26,6 +26,7 @@ struct Pow:ExpressionType<numType>{
     }
 };
 DefineBinaryOperator(pow,Pow)    
+template<typename numType> Expression<numType> pow(const numType &LHS, const numType &RHS){return  Variable<numType>( std::pow(LHS,RHS) ) ; }
 DefineBinaryOperator(operator^,Pow)    
 
 template<typename numType>
@@ -34,6 +35,8 @@ template<typename numType>
 auto log(const numType &LHS,const Expression<numType> &RHS){return log(RHS)/std::log(LHS);}
 template<typename numType>
 auto log(const Expression<numType> &LHS,const numType &RHS){return std::log(RHS)/log(LHS);}
+template<typename numType>
+auto log(const numType &LHS,const numType &RHS){return Variable<numType>( std::log(RHS)/std::log(LHS) );}
 
 
 

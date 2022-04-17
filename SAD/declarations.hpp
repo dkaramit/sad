@@ -22,7 +22,10 @@ template<typename numType> Expression<numType> op(const Expression<numType> &LHS
     DefineBinaryOperator(Operator,ClassName)
 
 
-#define DefineUnaryOperator(op,expr)template<typename numType> Expression<numType> op(const Expression<numType> &Expr){return newExpression<numType,expr<numType>>( Expr );}
+#define DefineUnaryOperator(op,expr)\
+template<typename numType> Expression<numType> op(const Expression<numType> &Expr){return newExpression<numType,expr<numType>>( Expr );}\
+template<typename numType> Expression<numType> op(const numType &x){return Variable<numType>(std::op(x));}
+
 #define DefineUnaryOperatorClass(Operator,ClassName,evalFunc,derivFunc)template<typename numType>\
     struct ClassName:ExpressionType<numType>{ \
         const Expression<numType> Expr; \

@@ -8,7 +8,17 @@
 
 namespace sad{
 
-DefineUnaryOperatorClass(operator-,Neg, -Expr->eval() ,( - (Expr->der(wrt)) ))
+
+template<typename numType>
+    struct Neg:ExpressionType<numType>{ 
+        const Expression<numType> Expr; 
+        Neg(const Expression<numType> &Expr):Expr(Expr){}; 
+        numType eval() const {return -Expr->eval();} 
+        Expression<numType> der(const Expression<numType> &wrt) const {return  - (Expr->der(wrt)) ;} 
+};
+template<typename numType> Expression<numType> operator-(const Expression<numType> &Expr){return newExpression<numType,Neg<numType>>( Expr );}\
+
+
 
 template<typename numType> struct Cos;//we need this declaration, because Cos referenced in the Sin struct 
 DefineUnaryOperatorClass(sin,Sin,std::sin(Expr->eval()),(  (Expr->der(wrt))*newExpression<numType,Cos<numType>>(Expr) ))
@@ -30,6 +40,8 @@ auto erfc(const Expression<numType> &x){return One<numType>-erf(x);}
 
 template<typename numType>
 auto tan(const Expression<numType> &x){return sin(x)/cos(x);}
+template<typename numType>
+auto tan(const numType &x){return Variable<numType>(std::tan(x));}
 DefineUnaryOperatorClass(atan,ArcTan, std::atan(Expr->eval()) ,(  Expr->der(wrt)/( One<numType> + Expr * Expr) ))
 
 template<typename numType>
@@ -38,7 +50,6 @@ auto tanh(const Expression<numType> &x){ return   (exp(Two<numType>*x)-One<numTy
 template<typename numType>
 auto atanh(const Expression<numType> &x){ return   Half<numType>*( log(One<numType>+x) - log(One<numType>-x)  ) ;}
 
-/*I don't use the macro, because the derivative is a bit more complicated*/
 template<typename argType,typename numType>
 struct BesselK:ExpressionType<numType>{
     const argType i;
@@ -53,6 +64,8 @@ struct BesselK:ExpressionType<numType>{
 };
 template<typename argType,typename numType>
 auto cyl_bessel_k(const argType &i, const Expression<numType> &Expr){return newExpression<numType,BesselK<argType,numType>>(i,Expr); }
+template<typename argType,typename numType>
+auto cyl_bessel_k(const argType &i, const numType &Expr){return Variable<numType>(std::cyl_bessel_k(i,Expr)) ; }
 
 
 }
