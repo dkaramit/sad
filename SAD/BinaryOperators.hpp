@@ -30,6 +30,10 @@ DefineBinaryOperator(operator^,Pow)
 
 template<typename numType>
 auto log(const Expression<numType> &LHS,const Expression<numType> &RHS){return log(RHS)/log(LHS);}
+template<typename numType>
+auto log(const numType &LHS,const Expression<numType> &RHS){return log(RHS)/std::log(LHS);}
+template<typename numType>
+auto log(const Expression<numType> &LHS,const numType &RHS){return std::log(RHS)/log(LHS);}
 
 
 
