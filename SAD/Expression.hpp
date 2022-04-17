@@ -31,13 +31,13 @@ class VariableType:public ExpressionType<numType>{
 };
 
 
-template<typename numType> static auto Zero   = Variable<numType> ( 0   );
-template<typename numType> static auto One    = Variable<numType> ( 1   );
-template<typename numType> static auto Two    = Variable<numType> ( 2   );
-template<typename numType> static auto Half   = Variable<numType> ( 0.5 );
-template<typename numType> static auto Pi     = Variable<numType> ( M_PIl );
-template<typename numType> static auto Pi2    = Variable<numType> ( M_PI*M_PI );
-template<typename numType> static auto SqrtPi = Variable<numType> ( std::sqrt(M_PIl) );
+template<typename numType> static const auto Zero   = Variable<numType> ( 0   );
+template<typename numType> static const auto One    = Variable<numType> ( 1   );
+template<typename numType> static const auto Two    = Variable<numType> ( 2   );
+template<typename numType> static const auto Half   = Variable<numType> ( 0.5 );
+template<typename numType> static const auto Pi     = Variable<numType> ( M_PIl );
+template<typename numType> static const auto Pi2    = Variable<numType> ( M_PI*M_PI );
+template<typename numType> static const auto SqrtPi = Variable<numType> ( std::sqrt(M_PIl) );
 
 
 template<typename numType>
