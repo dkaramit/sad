@@ -11,13 +11,25 @@ int main(){
     /*This is how you define new variables*/
     sad::Expression<double> x(3);
     sad::Expression<double> y(10);
+    x.status();
+    y.status();
 
 
     /*This is how you define new expressions*/
-    sad::Expression<double> expr=(y+x)*x*y;
+    // sad::Expression<double> expr(55);//now it's a variable.
+    sad::Expression<double> expr=x;//now it's not a variable.
+    expr.status();
     /*You can simply reassign with no problem*/
+    // doing it like this, expr becomes a Variable.
+    expr=33;
+    expr.status();
+    
+    // doing it like this, expr becomes an Expression again.
+    expr=(x+y)*y*x;
     expr=expr+x*y;
+    expr.status();
 
+    
     /*<< is overloaded*/
     cout<<(expr)<<"\n";
     /*But you can evaluate the result as*/
@@ -46,6 +58,5 @@ int main(){
     // I am not sure how good of a design this is, but let's see..
     expr=8;
     cout<<expr<<"\n";
-
 return 0;
 }

@@ -17,13 +17,15 @@ template<typename numType>
 class  Expression{
     public:
     ~Expression()=default;
+    Expression():is_var(0){}
     Expression(const Expression &expr);
     Expression(const AbsExp_ptr<numType> &);
     explicit Expression(const numType &);
     
     Expression derivative(const Expression<numType> &)const;
     numType evaluate()const;
-    Expression* operator=(const numType &);
+    inline Expression* operator=(const numType &);
+    inline Expression* operator=(const Expression &);
 
     /*overload the ostream so that it prints the evaluated result*/
     friend std::ostream& operator<<(std::ostream& os, const Expression &expr){
@@ -31,9 +33,12 @@ class  Expression{
         return os;
     }
 
+    void status(){std::cout<<bool(is_var)<<"\n";}
+
     friend class Variable<numType>;//we want the Variable class to have access to expr_ptr in order to know wrt what we differentiate
     private:
     AbsExp_ptr<numType> expr_ptr;
+    bool is_var;
 };
 
 template<typename numType>
@@ -41,11 +46,9 @@ class AbstractExpression{
 	public:
     virtual ~AbstractExpression()=default;
     AbstractExpression()=default;
-    AbstractExpression(const numType &value):value(value){}
     friend class Expression<numType>;
     
     protected:
-    numType value;
     
     private:
     virtual numType evaluate()const=0;
@@ -54,7 +57,7 @@ class AbstractExpression{
 template<typename numType>
 class Variable:public AbstractExpression<numType>{
     public:
-    Variable(const numType &value):AbstractExpression<numType>(value){}
+    Variable(const numType &value):value(value){}
     friend class Expression<numType>;
 
     private:
@@ -64,24 +67,45 @@ class Variable:public AbstractExpression<numType>{
         if(this==wrt.expr_ptr.get()){return Expression<numType>( numType(1) );}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
     	return Expression<numType>( numType(0) );//otherwise, return an Expression that evaluates to 0
     }
+    numType value;
 };
 
 
 /*The friend class depends on all the others, so put the definitions down here*/
 template<typename numType>
-Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr){}
+Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr),is_var(0){}
 template<typename numType>
-Expression<numType>::Expression(const numType &value):expr_ptr(new Variable<numType>(value)){}
+Expression<numType>::Expression(const numType &value):expr_ptr(new Variable<numType>(value)),is_var(1){}
 template<typename numType>
-Expression<numType>::Expression(const AbsExp_ptr<numType> &expr_ptr):expr_ptr(expr_ptr){}
-template<typename numType>
-Expression<numType> Expression<numType>::derivative(const Expression<numType> &wrt)const{ return expr_ptr->derivative(wrt); }
+Expression<numType>::Expression(const AbsExp_ptr<numType> &expr_ptr):expr_ptr(expr_ptr),is_var(0){}
 
 template<typename numType>
-Expression<numType>* Expression<numType>::operator=(const numType &value){
+Expression<numType> Expression<numType>::derivative(const Expression<numType> &wrt)const{ 
+    return expr_ptr->derivative(wrt); 
+}
+
+template<typename numType>
+inline Expression<numType>* Expression<numType>::operator=(const numType &value){
+    if(not is_var){
+        expr_ptr = std::shared_ptr<Variable<numType>>(new Variable<numType>(value));
+        is_var=1;
+    }
+
     static_cast< Variable<numType>* >(expr_ptr.get())->value=value;
+    
     return this;
 }
+
+template<typename numType>
+inline Expression<numType>* Expression<numType>::operator=(const Expression &expr){
+    expr_ptr=expr.expr_ptr;
+    is_var=0;
+
+    return this;
+}
+
+
+
 
 template<typename numType>
 numType Expression<numType>::evaluate()const{ return expr_ptr->evaluate(); }
