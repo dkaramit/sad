@@ -3,8 +3,8 @@
 
 // #include<SAD/declarations.hpp>
 #include<SAD/Expression.hpp>
+#include<SAD/BinaryOperators.hpp>
 // #include<SAD/UnaryOperators.hpp>
-// #include<SAD/BinaryOperators.hpp>
 
 
 
