@@ -23,7 +23,7 @@ class  Expression{
     
     Expression derivative(const Expression<numType> &)const;
     numType evaluate()const;
-    Expression* operator=(const Variable<numType> &);
+    Expression* operator=(const numType &);
 
     /*overload the ostream so that it prints the evaluated result*/
     friend std::ostream& operator<<(std::ostream& os, const Expression &expr){
@@ -74,8 +74,8 @@ template<typename numType>
 Expression<numType> Expression<numType>::derivative(const Expression<numType> &wrt)const{ return expr_ptr->derivative(wrt); }
 
 template<typename numType>
-Expression<numType>* Expression<numType>::operator=(const Variable<numType> &var){
-    static_cast<Variable<numType>*>(expr_ptr)->value=var.value;
+Expression<numType>* Expression<numType>::operator=(const numType &value){
+    static_cast< Variable<numType>* >(expr_ptr.get())->value=value;
     return this;
 }
 
