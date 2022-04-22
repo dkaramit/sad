@@ -8,14 +8,17 @@ using std::vector;
 
 
 int main(){
-  sad::Expression<double> x(3);
-  sad::Expression<double> y(33);
-	cout<<x.eval()<<"\n";
-	cout<<x.der(x).eval()<<"\n";
-	
-	cout<<(x+y).der(x).eval()<<"\n";
-	
+  sad::Expression<double> x(3,"x");
+  sad::Expression<double> y(33,"yuu");
+  
+  
+	cout<<(y+x).der(x).eval()<<"\n";
+	cout<<(y+x).der(y).eval()<<"\n";
+  auto p=x;//this is good.
+	cout<<(y+p+x).der(p).eval()<<"\n";
 
-
+	  
+  sad::Expression<double> z(33);//no name (or empty charachter) implies a constant (the derivative wrt itself is zero)
+	cout<<z.der(z).eval()<<"\n";
   return 0;
 }
