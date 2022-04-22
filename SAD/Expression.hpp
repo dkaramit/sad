@@ -41,7 +41,12 @@ class AbstractExpression{
 	public:
     virtual ~AbstractExpression()=default;
     AbstractExpression()=default;
+    AbstractExpression(const numType &value):value(value){}
     friend class Expression<numType>;
+    
+    protected:
+    numType value;
+    
     private:
     virtual numType evaluate()const=0;
     virtual Expression<numType> derivative(const Expression<numType> &)const=0;
@@ -49,17 +54,16 @@ class AbstractExpression{
 template<typename numType>
 class Variable:public AbstractExpression<numType>{
     public:
-    Variable(const numType &value):value(value){}
+    Variable(const numType &value):AbstractExpression<numType>(value){}
     friend class Expression<numType>;
 
     private:
-    numType evaluate()const{return value;}
+    numType evaluate()const{return this->value;}
     Expression<numType> derivative(const Expression<numType> &wrt)const{
         //check if we differentiate wrt this variable
         if(this==wrt.expr_ptr.get()){return Expression<numType>( numType(1) );}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
     	return Expression<numType>( numType(0) );//otherwise, return an Expression that evaluates to 0
     }
-    numType value;
 };
 
 
@@ -81,8 +85,6 @@ Expression<numType>* Expression<numType>::operator=(const numType &value){
 
 template<typename numType>
 numType Expression<numType>::evaluate()const{ return expr_ptr->evaluate(); }
-
-
 
 
 /*functions to get the derivates and evaluate the expressions*/
