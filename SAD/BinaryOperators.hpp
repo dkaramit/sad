@@ -3,6 +3,9 @@
 
 #include <cmath> 
 #include<SAD/Expression.hpp>
+#include<SAD/utilities.hpp>
+
+#define sadCT(l,r) typename std::common_type<l,r>::type; 
 
 namespace sad{
 
@@ -17,11 +20,16 @@ class Addition: public AbstractExpression<numType>{
     Expression<numType> derivative(const unsigned int &id)const;
     numType evaluate()const;
 };
-/*this is the addition operator*/
+/*this is the addition of two expressions*/
 template<typename numType>
-Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){
-    return AbsExp_ptr<numType>(new Addition<numType>(LH,RH));
-}
+Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){ return AbsExp_ptr<numType>(new Addition<numType>(LH,RH)); }
+
+/*this is the addition of an expression and a number*/
+template<typename numType, typename LD> Expression<numType> operator+(const Expression<numType> &LH, const LD &RH){ return LH + constant<numType>(RH); }
+
+/*this is the addition of a number and an expression*/
+template<typename numType, typename LD> Expression<numType> operator+(const LD &LH, const Expression<numType> &RH){ return RH+LH;}
+
 
 /*This need to be after operator+ has been declared.*/
 template<typename numType>
@@ -40,11 +48,16 @@ class Multiplication: public AbstractExpression<numType>{
     Expression<numType> derivative(const unsigned int &)const;
     numType evaluate()const;
 };
-/*this is the multiplication operator*/
+/*this is the multiplication of two expressions*/
 template<typename numType>
-Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){
-    return AbsExp_ptr<numType>(new Multiplication<numType>(LH,RH));
-}
+Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){ return AbsExp_ptr<numType>(new Multiplication<numType>(LH,RH)); }
+
+/*this is the Multiplication of an expression and a number*/
+template<typename numType, typename LD> Expression<numType> operator*(const Expression<numType> &LH, const LD &RH){ return LH * constant<numType>(RH); }
+
+/*this is the Multiplication of a number and an expression*/
+template<typename numType, typename LD> Expression<numType> operator*(const LD &LH, const Expression<numType> &RH){ return RH*LH;}
+
 
 /*This need to be after operator* has been declared.*/
 template<typename numType>

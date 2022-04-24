@@ -11,10 +11,14 @@ STD=-std=c++17
 
 FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall
 
-all: variables_constants_expressions.run
+EXE = $(shell find . -type f -name '*.cpp' | sed 's/\.cpp/.run/g' | sed 's/\.\///g')
 
-variables_constants_expressions.run: variables_constants_expressions.cpp makefile $(IncludeHPP)
+all: $(EXE)
+
+
+%.run: %.cpp makefile $(IncludeHPP)
 	$(CC) -o $@ $< $(FLG) 
 
+
 clean:
-	rm variables_constants_expressions.run || true
+	rm *.run || true

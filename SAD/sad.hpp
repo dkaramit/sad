@@ -5,6 +5,7 @@
 #include<SAD/BinaryOperators.hpp>
 #include<SAD/UnaryOperators.hpp>
 
+#include<SAD/utilities.hpp>
 
 
 
