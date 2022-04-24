@@ -4,7 +4,12 @@
 #include <iostream>
 #include <cmath>
 #include<memory>
+#include<valarray>
 #include<type_traits>
+
+// static size_t _sad_count_=0;
+// #define PPF std::cout<<++_sad_count_<<"\t"<<__PRETTY_FUNCTION__<<"\t"<<sad::Expression<numType>::TotalNumberOfVariables()<<"\t"
+
 
 namespace sad{
 
@@ -25,7 +30,7 @@ class Expression{
     Expression(const numType &, const bool &is_var=true);
     
     numType evaluate()const;
-    Expression derivative(const Expression<numType> &)const;
+    Expression derivative(const unsigned int &)const;
     
     Expression* operator=(const numType &);
     Expression* operator=(const Expression &);
@@ -41,8 +46,8 @@ class Expression{
     
     //if this instance is a variable, return its ID. If it is not, returns 0.
     unsigned int ID()const{ 
-        if(not isVar()){return 0;}
-        return getVar()->id;
+        if(isVar()){return getVar()->id;}
+        return 0;
     }
     
 
@@ -79,7 +84,7 @@ class AbstractExpression{
     
     private:
     virtual numType evaluate()const=0;
-    virtual Expression<numType> derivative(const Expression<numType> &)const=0;
+    virtual Expression<numType> derivative(const unsigned int &id)const=0;
 };
 
 template<typename numType>
@@ -90,9 +95,9 @@ class Variable:public AbstractExpression<numType>{
 
     private:
     numType evaluate()const{return this->value;}
-    Expression<numType> derivative(const Expression<numType> &wrt)const{
+    Expression<numType> derivative(const unsigned int &wrt)const{
         //check if we differentiate wrt this variable
-        if(this->id==wrt.getVar()->id){return ONE<numType>;}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
+        if(this->id==wrt){return ONE<numType>;}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
     	return ZERO<numType>;//otherwise, return an Expression that evaluates to 0
     }
     numType value;
@@ -105,24 +110,23 @@ template<typename numType>
 Expression<numType>::Expression(const AbsExp_ptr<numType> &expr_ptr):expr_ptr(expr_ptr),is_var(false){}
 template<typename numType>
 Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr){
+    
     if(not expr.isVar()){ is_var=false;} // if expr is not a varialbe, then the new expression is not a variable  
-    if(expr.isVar()){ is_var=true; getVar()->id=expr.getVar()->id; } //if expr is a variable, then then the new expression becomes an alias for expr. The number of variables stays the same. 
+    if(expr.isVar()){is_var=true; getVar()->id=expr.getVar()->id; } //if expr is a variable, then then the new expression becomes an alias for expr. The number of variables stays the same. 
 }
 
 template<typename numType>
 Expression<numType>::Expression(const numType &value, const bool &is_var):expr_ptr(new Variable<numType>(value,0)),is_var(is_var){
     //when the new instance is as variable (is_var=true), we increase NumberOfVars and make this number the id of the new variable.
-    if(is_var){
-        getVar()->id = ++Expression<numType>::NumberOfVars;
-    }
+    if(is_var){getVar()->id = ++Expression<numType>::NumberOfVars;}
 }
 
 /*Assignments of Expression*/
 template<typename numType>
 Expression<numType>* Expression<numType>::operator=(const Expression &expr){
+    
     //the new expression becomes the AbstractExpression pointer from expr.
     expr_ptr=expr.expr_ptr;
-
     /*These are the same as the corresponding constructor*/
     if(not expr.isVar()){ is_var=false;} // if expr is not a varialbe, then the new expression is not a variable  
     if(expr.isVar()){ is_var=true; getVar()->id=expr.getVar()->id; } //if expr is a variable, then then the new expression becomes an alias for expr. The number of variables stays the same. 
@@ -132,8 +136,9 @@ Expression<numType>* Expression<numType>::operator=(const Expression &expr){
 
 template<typename numType>
 Expression<numType>* Expression<numType>::operator=(const numType &value){
+    
     //if this expression is already a variable, then just chage its value
-    if (isVar()) {static_cast< Variable<numType>* >(expr_ptr.get())->value=value; }
+    if (isVar()) {getVar()->value=value; }
 
     //if this expression is not a variable, then make it a new variable. This means that NumberOfVars is increased
     // and its id gets the new NumberOfVars number.
@@ -148,13 +153,37 @@ Expression<numType>* Expression<numType>::operator=(const numType &value){
 
 /*derivative and evaluate of Expression*/
 template<typename numType>
-Expression<numType> Expression<numType>::derivative(const Expression<numType> &wrt)const{
-    if(wrt.is_var){return expr_ptr->derivative(wrt);}
-    return ZERO<numType>;
+Expression<numType> Expression<numType>::derivative(const unsigned int &wrt)const{
+    if(wrt == 0) {return ZERO<numType>;}
+    return expr_ptr->derivative(wrt);
 }
 
 template<typename numType>
 numType Expression<numType>::evaluate()const{ return expr_ptr->evaluate(); }
+
+
+
+
+/*You can use these functions to take the derivative easier*/
+
+//derivative with respect to a variable (it takes the id of the variable as unsigned it)
+template<typename numType>Expression<numType> derivative(const Expression<numType> &Expr, const unsigned int &wrt){return Expr.derivative(wrt);}
+
+//derivative with respect to a valarray of ids
+template<typename numType> Expression<numType> derivative(const Expression<numType> &Expr, const std::valarray<unsigned int> &wrt){
+    std::valarray<unsigned int>  tail= wrt[ std::slice(1, wrt.size() - 1, 1) ];
+    if(wrt.size() == 1 ){return Expr.derivative(wrt[0]) ; }
+    return  derivative( Expr.derivative(wrt[0]) , tail ) ;
+}
+
+//this does the same as derivative(const Expression<numType> &Expr, const std::valarray<unsigned int> &wrt), but you can call it
+// using a parameter pack of instances of Expression
+template<typename numType,typename... Args>
+Expression<numType> derivative(const Expression<numType> &Expr, const Args&... vars){ return  derivative(Expr, std::valarray<unsigned int>{vars.ID()...}) ;}
+
+
+
+
 
 
 

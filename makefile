@@ -1,10 +1,7 @@
-Path=$(PWD)
+reootDir="./"
 
-
-IncludeDir="$(Path)"
+IncludeDir="$(reootDir)"
 IncludeHPP = $(shell find SAD/ -type f -name '*.hpp')
-
-
 
 CC=g++
 OPT=-O3
@@ -13,11 +10,17 @@ STD=-std=c++17
 
 FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall
 
-all: example_sad.run
 
-example_sad.run: example_sad.cpp makefile $(IncludeHPP)
-	
+
+all: test.run examples
+
+test.run: test.cpp makefile $(IncludeHPP)
 	$(CC) -o $@ $< $(FLG) 
 
+examples:
+	cd Examples && $(MAKE) all
+
+
 clean:
-	rm example_sad.run || true
+	rm test.run || true
+	cd Examples && $(MAKE) clean
