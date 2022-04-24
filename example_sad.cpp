@@ -10,20 +10,25 @@ using std::vector;
 
 using LD = double;
 int main(){
-    /*This is how you define new variables*/
+    // /*This is how you define new variables*/
     sad::Expression<LD> x=5;          
-    sad::Expression<LD> y=1;
-    sad::Expression<LD> f=x*x+y*y;
+    sad::Expression<LD> y(1);
+    sad::Expression<LD> z(1,true);
+    //this is a constant
+    sad::Expression<LD> c(2,false);
+    cout<< x.derivative(x) <<"\n";
+    cout<< x.derivative(y) <<"\n";
+    cout<< y.derivative(y) <<"\n";
+    cout<< y.derivative(x) <<"\n";
+    x=y;
+    cout<< x.derivative(x) <<"\n";
+    cout<< x.derivative(y) <<"\n";
+    cout<< y.derivative(y) <<"\n";
+    cout<< y.derivative(x) <<"\n";
+
+    cout<< (y+x).ID() <<"\n";
 
 
-    cout<< f.evaluate() << "\n"; 
-    cout<< f.derivative(x) << "\n"; 
-    cout<< f.derivative(y) << "\n"; 
-
-    cout<< f.derivative(x).derivative(x) << "\n"; 
-    cout<< f.derivative(x).derivative(y) << "\n"; 
-    cout<< f.derivative(y).derivative(x) << "\n"; 
-    cout<< f.derivative(y).derivative(y) << "\n"; 
 
 return 0;
 }
