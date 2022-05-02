@@ -5,7 +5,7 @@ using std::cout;
 
 using LD = double;
 int main(){
-
+    #if 0
     // /*This is how you define new variables*/
     sad::Expression<LD> x(10);          
     sad::Expression<LD> y(1);
@@ -28,6 +28,6 @@ int main(){
     cout<< sad::derivative(x,x) <<"\n";
     cout<< sad::derivative(y,x) <<"\n";
     cout<< sad::derivative(x,y) <<"\n";
-
+    #endif
     return 0;
 }

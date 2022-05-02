@@ -6,10 +6,19 @@ using std::cout;
 using LD = double;
 
 int main(){
-    sad::Expression<LD> x(10);          
-    sad::Expression<LD> y(1);          
-    auto z = 1+x+1.f*y+2*y*y*3;
-    z=z*2+x;
     
+    auto x = sad::variable<LD>(10);          
+    auto y = sad::variable<LD>(1);          
+    sad::Expression<LD> w=y+x;          
+
+    cout<<w<<"\n";
+    cout<<derivative(w,x)<<"\n";
+
+    /*this can easily confuse the user. So it introduces room for errors.*/
+    y=3*y;
+    cout<<w<<"\n";
+    cout<<derivative(w,y)<<"\n";
+
+
     return 0;
 }
