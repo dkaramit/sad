@@ -29,7 +29,7 @@ template<typename numType>
 class Variable:public AbstractExpression<numType>{
     friend class Expression<numType>;
     public:
-    Variable(const numType &value, const unsigned int &id=0):value(value),id(id){}//id==0 means a constant
+    Variable(const numType &value):value(value),id(++NumberOfVars){}
 
     private:
     numType evaluate()const{return this->value;}
@@ -39,8 +39,10 @@ class Variable:public AbstractExpression<numType>{
     	return ZERO<numType>;//otherwise, return an Expression that evaluates to 0
     }
     numType value;
-    unsigned int id;
+    const unsigned int id;
+    static unsigned int NumberOfVars;
 };
+template<typename numType> unsigned int Variable<numType>::NumberOfVars=0;
 
 
 }

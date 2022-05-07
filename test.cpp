@@ -7,17 +7,22 @@ using LD = double;
 
 int main(){
     
-    auto x = sad::variable<LD>(10);          
-    auto y = sad::variable<LD>(1);          
-    sad::Expression<LD> w=y+x;          
+    auto x = sad::Expression<LD>::variable(10);          
+    auto y = sad::Expression<LD>::variable(2.8); 
 
-    cout<<w<<"\n";
-    cout<<derivative(w,x)<<"\n";
+    sad::Expression z=x;     
+    // z=5; //Forbidden!!
 
-    /*this can easily confuse the user. So it introduces room for errors.*/
-    y=3*y;
-    cout<<w<<"\n";
-    cout<<derivative(w,y)<<"\n";
+    z=z*y*x;
+
+    cout<<z<<"\n";   
+    cout<<derivative(z,x)<<"\n";   
+    cout<<derivative(z,y)<<"\n";   
+
+    x=z;//copies the value of z
+    cout<<z<<"\n";   
+    cout<<derivative(z,x)<<"\n";   
+    cout<<derivative(z,y)<<"\n";   
 
 
     return 0;

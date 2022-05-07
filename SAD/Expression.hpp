@@ -18,18 +18,22 @@ namespace sad{
 template<typename numType>
 class Expression{
     friend class Variable<numType>;//we want the Variable class to have access to expr_ptr in order to know wrt what we differentiate
+    
     public:
     ~Expression()=default;
     Expression()=delete;
     
+
     Expression(const Expression &);//copy-constructor
     // Expression(Expression && expr);//move-constructor
     
-    Expression(const numType &, const bool &is_var=true);
-    // Expression(numType &&, bool &&is_var=true);
     
     Expression(const AbsExp_ptr<numType> &);
     // Expression(AbsExp_ptr<numType> &&);
+
+    Expression(const numType &);
+    // Expression(numType &&, bool &&is_var=true);
+    static auto variable(const numType &value){return Expression<numType>(value);}
     
     numType evaluate()const;
     Expression derivative(const unsigned int &)const;
@@ -56,11 +60,10 @@ class Expression{
     }
     
 
-    static unsigned int  TotalNumberOfVariables(){ return NumberOfVars;}
+    static unsigned int  TotalNumberOfVariables(){ return Variable<numType> :: NumberOfVars;}
     private:
     AbsExp_ptr<numType> expr_ptr;
-    bool is_var;
-    static unsigned int NumberOfVars;
+    const bool is_var;
 
     //Get the raw pointer to the expr_ptr casted as Variable<numType>*. 
     //This is private as it will only be used within this class, and only with
@@ -68,7 +71,6 @@ class Expression{
     Variable<numType>* getVar()const{ return static_cast< Variable<numType>* >(expr_ptr.get()); }
 };
 
-template<typename numType> unsigned int Expression<numType>::NumberOfVars=0;
 
 
 
@@ -76,46 +78,34 @@ template<typename numType> unsigned int Expression<numType>::NumberOfVars=0;
 template<typename numType> Expression<numType>::Expression(const AbsExp_ptr<numType> &expr_ptr):expr_ptr(expr_ptr),is_var(false){}
 
 template<typename numType>
-Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr){
-    if(not expr.isVar()){is_var=false;} // if expr is not a varialbe, then the new expression is not a variable  
-    if(expr.isVar()){is_var=true; getVar()->id= expr.ID() ; } //if expr is a variable, then then the new expression becomes an alias for expr. The number of variables stays the same. 
-}
+Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr), is_var(false){}
 
 template<typename numType>
-Expression<numType>::Expression(const numType &value, const bool &is_var):expr_ptr(new Variable<numType>(value,0)),is_var(is_var){
-    //when the new instance is as variable (is_var=true), we increase NumberOfVars and make this number the id of the new variable.
-    if(is_var){getVar()->id = ++Expression<numType>::NumberOfVars;}
-}
+Expression<numType>::Expression(const numType &value):expr_ptr(new Variable<numType>(value)),is_var(true){}
 
 
 /*Assignments of Expression*/
 template<typename numType>
 Expression<numType>& Expression<numType>::operator=(const Expression &expr){
-    //the new expression becomes the AbstractExpression pointer from expr.
-    expr_ptr=expr.expr_ptr;
-    /*These are the same as the corresponding constructor*/
-    if(not expr.isVar()){ is_var=false;} // if expr is not a varialbe, then the new expression is not a variable  
-    if(expr.isVar()){ is_var=true; getVar()->id=expr.getVar()->id; } //if expr is a variable, then then the new expression becomes an alias for expr. The number of variables stays the same. 
-
+    
+    //If this instance is a variable, assign the value o the expression to this variable
+    if(isVar()){  getVar()->value= expr.evaluate(); }
+    
+    //if it is not then it becomes the expression (ie the expr_ptr is copied).
+    if(not isVar()){ expr_ptr=expr.expr_ptr; } 
+    
     return *this;
 }
 
-/*Assignments of Expression*/
-
 template<typename numType>
 Expression<numType>& Expression<numType>::operator=(const numType &value){
-    expr_ptr = std::shared_ptr<Variable<numType>>(new Variable<numType>(value,ID()));
-    
-    //if this expression is already a variable, then just chage its value
-    if (isVar()) {getVar()->value=value; }
-
-    //if this expression is not a variable, then make it a new variable. This means that NumberOfVars is increased
-    // and its id gets the new NumberOfVars number.
-    if(not isVar()){
-        // expr_ptr = std::shared_ptr<Variable<numType>>(new Variable<numType>(value));
-        is_var=true;
-        getVar()->id= ++Expression<numType>::NumberOfVars;
-    }
+   
+    //if this instance is a variable, its value changes
+    if (isVar()) { getVar()->value=value; }
+   
+    //if it is not, throw an exception!
+    if(not isVar()){  throw std::runtime_error("You cannot assign number to Expression!") ; }
+   
     return *this;
 }
 

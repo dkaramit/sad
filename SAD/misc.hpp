@@ -1,5 +1,5 @@
-#ifndef Declarations_H
-#define Declarations_H
+#ifndef MISC_H
+#define MISC_H
 
 #include <iostream>
 #include<memory>
@@ -18,13 +18,13 @@ template<typename numType> using AbsExp_ptr=std::shared_ptr<AbstractExpression<n
 
 
 /*----these constants will be helpful---*/
-template<typename numType>static const Expression<numType> ONE(1,false);
-template<typename numType>static const Expression<numType> ZERO(0,false);
-template<typename numType>static const Expression<numType> NEG_ONE(-1,false);
-template<typename numType>static const Expression<numType> HALF(0.5,false);
-template<typename numType>static const Expression<numType> PI(M_PI,false);
-template<typename numType>static const Expression<numType> PI2(M_PI*M_PI,false);
-template<typename numType>static const Expression<numType> SQRT_PI(2/M_2_SQRTPI,false);
+template<typename numType>static const auto ONE     = Expression<numType>::variable(1);
+template<typename numType>static const auto ZERO    = Expression<numType>::variable(0);
+template<typename numType>static const auto NEG_ONE = Expression<numType>::variable(-1);
+template<typename numType>static const auto HALF    = Expression<numType>::variable(0.5);
+template<typename numType>static const auto PI      = Expression<numType>::variable(M_PI);
+template<typename numType>static const auto PI2     = Expression<numType>::variable(M_PI*M_PI);
+template<typename numType>static const auto SQRT_PI = Expression<numType>::variable(2/M_2_SQRTPI);
 
 
 }

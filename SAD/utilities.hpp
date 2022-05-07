@@ -6,10 +6,6 @@
 
 
 namespace sad{
-
-template<typename numType> Expression<numType> variable(const numType &value){return Expression<numType>(value,true);}
-template<typename numType> Expression<numType> constant(const numType &value){return Expression<numType>(value,false);}
-
 // evaluate function
 template<typename numType> numType evaluate(const Expression<numType> &Expr){return Expr.evaluate();}
 

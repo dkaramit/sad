@@ -25,7 +25,7 @@ template<typename numType>
 Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){ return AbsExp_ptr<numType>(new Addition<numType>(LH,RH)); }
 
 /*this is the addition of an expression and a number*/
-template<typename numType, typename LD> Expression<numType> operator+(const Expression<numType> &LH, const LD &RH){ return LH + constant<numType>(RH); }
+template<typename numType, typename LD> Expression<numType> operator+(const Expression<numType> &LH, const LD &RH){ return LH + Expression<numType>::constant(RH); }
 
 /*this is the addition of a number and an expression*/
 template<typename numType, typename LD> Expression<numType> operator+(const LD &LH, const Expression<numType> &RH){ return RH+LH;}
@@ -53,7 +53,7 @@ template<typename numType>
 Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){ return AbsExp_ptr<numType>(new Multiplication<numType>(LH,RH)); }
 
 /*this is the Multiplication of an expression and a number*/
-template<typename numType, typename LD> Expression<numType> operator*(const Expression<numType> &LH, const LD &RH){ return LH * constant<numType>(RH); }
+template<typename numType, typename LD> Expression<numType> operator*(const Expression<numType> &LH, const LD &RH){ return LH * Expression<numType>::constant(RH); }
 
 /*this is the Multiplication of a number and an expression*/
 template<typename numType, typename LD> Expression<numType> operator*(const LD &LH, const Expression<numType> &RH){ return RH*LH;}

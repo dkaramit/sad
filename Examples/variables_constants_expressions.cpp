@@ -5,14 +5,11 @@ using std::cout;
 
 using LD = double;
 int main(){
-    #if 0
     // /*This is how you define new variables*/
     sad::Expression<LD> x(10);          
     sad::Expression<LD> y(1);
-    // The constructor can take two arguments; its value and a bool. The bool determines if it is a variable or not.
-    sad::Expression<LD> z(1,true);
-    //this is a constant
-    sad::Expression<LD> c(2,false);
+    sad::Expression<LD> z = 1;
+    sad::Expression<LD> c = sad::Expression<LD>::variable(2);
 
     cout<< sad::derivative(x,x) <<"\n";
     x=c;
@@ -28,6 +25,5 @@ int main(){
     cout<< sad::derivative(x,x) <<"\n";
     cout<< sad::derivative(y,x) <<"\n";
     cout<< sad::derivative(x,y) <<"\n";
-    #endif
     return 0;
 }
