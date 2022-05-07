@@ -22,18 +22,17 @@ class Expression{
     public:
     ~Expression()=default;
     Expression()=delete;
-    
 
     Expression(const Expression &);//copy-constructor
     // Expression(Expression && expr);//move-constructor
     
-    
     Expression(const AbsExp_ptr<numType> &);
     // Expression(AbsExp_ptr<numType> &&);
 
-    Expression(const numType &);
+    Expression(const numType &, const bool &is_var=true);
     // Expression(numType &&, bool &&is_var=true);
     static auto variable(const numType &value){return Expression<numType>(value);}
+    static auto constant(const numType &value){return Expression<numType>(value,false);}
     
     numType evaluate()const;
     Expression derivative(const unsigned int &)const;
@@ -81,7 +80,7 @@ template<typename numType>
 Expression<numType>::Expression(const Expression<numType> &expr):expr_ptr(expr.expr_ptr), is_var(false){}
 
 template<typename numType>
-Expression<numType>::Expression(const numType &value):expr_ptr(new Variable<numType>(value)),is_var(true){}
+Expression<numType>::Expression(const numType &value, const bool &is_var):expr_ptr(new Variable<numType>(value,is_var)),is_var(is_var){}
 
 
 /*Assignments of Expression*/

@@ -1,5 +1,5 @@
 #include<iostream>
-#include<SAD/sad.hpp>
+#include<sad.hpp>
 
 using std::cout;
 

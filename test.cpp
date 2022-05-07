@@ -1,5 +1,5 @@
 #include<iostream>
-#include<SAD/sad.hpp>
+#include<sad.hpp>
 
 using std::cout;
 
@@ -8,12 +8,12 @@ using LD = double;
 int main(){
     
     auto x = sad::Expression<LD>::variable(10);          
-    auto y = sad::Expression<LD>::variable(2.8); 
+    sad::Expression y = 2.8; 
 
     sad::Expression z=x;     
-    // z=5; //Forbidden!!
+    // z=5; //runtime error!
 
-    z=z*y*x;
+    z=3+2*z*y*x*9+1;
 
     cout<<z<<"\n";   
     cout<<derivative(z,x)<<"\n";   
@@ -23,7 +23,6 @@ int main(){
     cout<<z<<"\n";   
     cout<<derivative(z,x)<<"\n";   
     cout<<derivative(z,y)<<"\n";   
-
 
     return 0;
 }

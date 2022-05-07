@@ -29,7 +29,7 @@ template<typename numType>
 class Variable:public AbstractExpression<numType>{
     friend class Expression<numType>;
     public:
-    Variable(const numType &value):value(value),id(++NumberOfVars){}
+    Variable(const numType &value, const bool &is_var):value(value),id(is_var ? ++NumberOfVars : 0 ){}
 
     private:
     numType evaluate()const{return this->value;}
