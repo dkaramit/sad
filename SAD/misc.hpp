@@ -3,10 +3,13 @@
 
 #include <iostream>
 #include<memory>
+#include<map>
 
 #define PPF std::cout<<__PRETTY_FUNCTION__<<"\n"
 
 namespace sad{
+using std::map;
+
 using IDType=unsigned int;
 
 

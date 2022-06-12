@@ -6,23 +6,25 @@ using std::cout;
 using LD = double;
 
 int main(){
+
+    sad::Expression<LD> x;
+    sad::Expression<LD> y;
+    sad::Expression<LD> z=x+y;
+
+    std::map<sad::IDType,LD> at=sad::at<LD>({x,y},{6,2}) ;
     
-    auto x = sad::Expression<LD>::variable(10);          
-    sad::Expression y = 2.8; 
+    cout<<x.evaluate( at )<<"\n";
+    cout<<x.derivative(1).evaluate( at )<<"\n";
+    cout<<x.derivative(2).evaluate( at )<<"\n";
 
-    sad::Expression z=x;     
-    // z=5; //runtime error!
+    cout<<z.evaluate( at )<<"\n";
+    cout<<z.derivative(1).evaluate( at )<<"\n";
+    cout<<z.derivative(2).evaluate( at )<<"\n";
 
-    z=z+y;
+    cout<<(z*x).evaluate( at )<<"\n";
+    cout<<(z*x).derivative(1).evaluate( at )<<"\n";
+    cout<<(z*x).derivative(2).evaluate( at )<<"\n";
 
-    cout<<z<<"\n";   
-    cout<<derivative(z,x)<<"\n";   
-    cout<<derivative(z,y)<<"\n";   
-
-    x=z;//copies the value of z
-    cout<<z<<"\n";   
-    cout<<derivative(z,x)<<"\n";   
-    cout<<derivative(z,y)<<"\n";   
 
     return 0;
 }

@@ -2,12 +2,27 @@
 #define sadUtil_H
 
 #include<valarray>
+#include<vector>
 #include<SAD/Expression.hpp>
 
 
 namespace sad{
+
+template<typename numType> map<IDType,numType> at(const std::vector<Expression<numType>> &vars, const std::vector<numType> &values){
+    map<IDType,numType> subs;
+    if( vars.size()!=values.size() ) {  throw std::runtime_error("lists of variables has to have same size as list of values"); }
+
+    for (IDType i = 0; i < vars.size(); i++){
+       subs[vars[i].ID()] = values.at(i);
+    }
+    
+    return subs;
+    
+    }
+
+
 // evaluate function
-template<typename numType> numType evaluate(const Expression<numType> &Expr){return Expr.evaluate();}
+template<typename numType> numType evaluate(const Expression<numType> &Expr,const map<IDType,numType> &values){return Expr.evaluate(values);}
 
 
 /*You can use these functions to take the derivative easier*/

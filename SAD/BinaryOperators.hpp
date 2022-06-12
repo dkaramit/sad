@@ -17,8 +17,8 @@ class Addition: public AbstractExpression<numType>{
     friend class Expression<numType>;
     private:
     Expression<numType> LH,RH;
-    Expression<numType> derivative(const unsigned int &id)const;
-    numType evaluate()const;
+    Expression<numType> derivative(const unsigned int &)const;
+    numType evaluate(const map<IDType,numType> &)const;
 };
 /*this is the addition of two expressions*/
 template<typename numType>
@@ -35,7 +35,7 @@ template<typename numType, typename LD> Expression<numType> operator+(const LD &
 template<typename numType>
 Expression<numType> Addition<numType>::derivative(const unsigned int &wrt)const{return LH.derivative(wrt) + RH.derivative(wrt);}
 template<typename numType>
-numType Addition<numType>::evaluate()const{ return LH.evaluate()+RH.evaluate(); }
+numType Addition<numType>::evaluate(const map<IDType,numType> &values)const{ return LH.evaluate(values)+RH.evaluate(values); }
 
 /*Define multiplication*/
 template<typename numType>
@@ -46,7 +46,7 @@ class Multiplication: public AbstractExpression<numType>{
     private:
     Expression<numType> LH,RH;
     Expression<numType> derivative(const unsigned int &)const;
-    numType evaluate()const;
+    numType evaluate(const map<IDType,numType> &)const;
 };
 /*this is the multiplication of two expressions*/
 template<typename numType>
@@ -63,7 +63,7 @@ template<typename numType, typename LD> Expression<numType> operator*(const LD &
 template<typename numType>
 Expression<numType> Multiplication<numType>::derivative(const unsigned int &wrt)const{return LH.derivative(wrt)*RH+LH*RH.derivative(wrt);}
 template<typename numType>
-numType Multiplication<numType>::evaluate()const{ return LH.evaluate()*RH.evaluate(); }
+numType Multiplication<numType>::evaluate(const map<IDType,numType> &values)const{ return LH.evaluate(values)*RH.evaluate(values); }
 
 
 
