@@ -9,21 +9,23 @@ int main(){
 
     sad::Expression<LD> x;
     sad::Expression<LD> y;
-    sad::Expression<LD> z=x+y;
+    sad::Expression<LD> z=x+y*x;
 
-    std::map<sad::IDType,LD> at=sad::at<LD>({x,y},{6,2}) ;
+    std::map at=sad::at<LD>({x,y},{6,2}) ;
     
-    cout<<x.evaluate( at )<<"\n";
-    cout<<x.derivative(1).evaluate( at )<<"\n";
-    cout<<x.derivative(2).evaluate( at )<<"\n";
+    cout<<evaluate(x, at )<<"\n";
+    cout<<evaluate(derivative(x,x), at )<<"\n";
+    cout<<evaluate(derivative(x,y), at )<<"\n";
 
-    cout<<z.evaluate( at )<<"\n";
-    cout<<z.derivative(1).evaluate( at )<<"\n";
-    cout<<z.derivative(2).evaluate( at )<<"\n";
 
-    cout<<(z*x).evaluate( at )<<"\n";
-    cout<<(z*x).derivative(1).evaluate( at )<<"\n";
-    cout<<(z*x).derivative(2).evaluate( at )<<"\n";
+    cout<<evaluate(y, at )<<"\n";
+    cout<<evaluate(derivative(y,x), at )<<"\n";
+    cout<<evaluate(derivative(y,y), at )<<"\n";
+
+
+    cout<<evaluate(z, at )<<"\n";
+    cout<<evaluate(derivative(z,x), at )<<"\n";
+    cout<<evaluate(derivative(z,y), at )<<"\n";
 
 
     return 0;
