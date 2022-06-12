@@ -34,7 +34,7 @@ class Expression{
     
     static auto constant(const numType &value){return Expression<numType>(value);}
     
-    numType evaluate(const map<IDType,numType> &values)const;
+    numType evaluate(const map<IDType,numType> &)const;
     Expression derivative(const IDType &)const;
     
     Expression& operator=(const Expression &);
@@ -74,7 +74,7 @@ Expression<numType> Expression<numType>::derivative(const IDType &wrt)const{
 }
 
 template<typename numType>
-numType Expression<numType>::evaluate(const map<IDType,numType> &values)const{ return expr_ptr->evaluate(values); }
+numType Expression<numType>::evaluate(const map<IDType,numType> &at)const{ return expr_ptr->evaluate(at); }
 
 
 

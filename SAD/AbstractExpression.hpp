@@ -34,7 +34,7 @@ class Constant:public AbstractExpression<numType>{
     Constant(const numType &value):value(value){}
 
     private:
-    numType evaluate(const map<IDType,numType> &values)const{return value;};
+    numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
 
     numType value;
@@ -49,9 +49,9 @@ class Variable:public AbstractExpression<numType>{
     Variable():id(++NumberOfVars){}
 
     private:
-    numType evaluate(const map<IDType,numType> &values)const{
-        if (values.find(ID()) == values.end()){throw std::runtime_error( std::string("No value for variable with ID: ") + std::to_string(ID()) ) ;}
-        return values.at(ID());
+    numType evaluate(const map<IDType,numType> &at)const{
+        if (at.find(ID()) == at.end()){throw std::runtime_error( std::string("No value for variable with ID: ") + std::to_string(ID()) ) ;}
+        return at.at(ID());
     };
 
     Expression<numType> derivative(const IDType &wrt)const{

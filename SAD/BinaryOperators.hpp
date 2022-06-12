@@ -5,7 +5,7 @@
 #include<SAD/Expression.hpp>
 #include<SAD/utilities.hpp>
 
-#define sadCT(l,r) typename std::common_type<l,r>::type; 
+// #define sadCT(l,r) typename std::common_type<l,r>::type; 
 
 namespace sad{
 
@@ -35,7 +35,7 @@ template<typename numType, typename LD> Expression<numType> operator+(const LD &
 template<typename numType>
 Expression<numType> Addition<numType>::derivative(const unsigned int &wrt)const{return LH.derivative(wrt) + RH.derivative(wrt);}
 template<typename numType>
-numType Addition<numType>::evaluate(const map<IDType,numType> &values)const{ return LH.evaluate(values)+RH.evaluate(values); }
+numType Addition<numType>::evaluate(const map<IDType,numType> &at)const{ return LH.evaluate(at)+RH.evaluate(at); }
 
 /*Define multiplication*/
 template<typename numType>
@@ -58,12 +58,11 @@ template<typename numType, typename LD> Expression<numType> operator*(const Expr
 /*this is the Multiplication of a number and an expression*/
 template<typename numType, typename LD> Expression<numType> operator*(const LD &LH, const Expression<numType> &RH){ return RH*LH;}
 
-
 /*This need to be after operator* has been declared.*/
 template<typename numType>
 Expression<numType> Multiplication<numType>::derivative(const unsigned int &wrt)const{return LH.derivative(wrt)*RH+LH*RH.derivative(wrt);}
 template<typename numType>
-numType Multiplication<numType>::evaluate(const map<IDType,numType> &values)const{ return LH.evaluate(values)*RH.evaluate(values); }
+numType Multiplication<numType>::evaluate(const map<IDType,numType> &at)const{ return LH.evaluate(at)*RH.evaluate(at); }
 
 
 
