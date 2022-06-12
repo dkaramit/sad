@@ -19,10 +19,13 @@ class AbstractExpression{
 	public:
     virtual ~AbstractExpression()=default;
     AbstractExpression()=default;
+    AbstractExpression(const AbstractExpression &)=default;
+    AbstractExpression(AbstractExpression &&)=default;
+    AbstractExpression& operator=(const AbstractExpression &)=delete;
+    AbstractExpression& operator=(AbstractExpression &&)=delete;
     
     private:
     virtual numType evaluate(const map<IDType,numType> &)const=0;
-    
     virtual Expression<numType> derivative(const IDType &)const=0;
     virtual IDType ID()const{return 0;}
 };
@@ -31,13 +34,20 @@ template<typename numType>
 class Constant:public AbstractExpression<numType>{
     friend class Expression<numType>;
     public:
-    Constant(const numType &value):value(value){}
+    ~Constant()=default;
+    Constant()=delete;
+    Constant& operator=(const Constant &)=delete;
+    Constant& operator=(Constant &&)=delete;
+
 
     private:
+    Constant(const numType &value):value(value){}
+    Constant(numType &&value):value(value){}
+
     numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
 
-    numType value;
+    const numType value;
 };
 
 
@@ -46,19 +56,22 @@ template<typename numType>
 class Variable:public AbstractExpression<numType>{
     friend class Expression<numType>;
     public:
-    Variable():id(++NumberOfVars){}
+    ~Variable()=default;
+    Variable(const Variable &)=delete;
+    Variable(Variable &&)=delete;
+    Variable& operator=(const Variable &)=delete;
+    Variable& operator=(Variable &&)=delete;
+
 
     private:
+    Variable():id(++NumberOfVars){}
+
     numType evaluate(const map<IDType,numType> &at)const{
         if (at.find(ID()) == at.end()){throw std::runtime_error( std::string("No value for variable with ID: ") + std::to_string(ID()) ) ;}
         return at.at(ID());
     };
 
-    Expression<numType> derivative(const IDType &wrt)const{
-        //check if we differentiate wrt this variable
-        if(this->id==wrt){return ONE<numType>;}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
-    	return ZERO<numType>;//otherwise, return an Expression that evaluates to 0
-    }
+    Expression<numType> derivative(const IDType &wrt)const{ return wrt == ID() ? ONE<numType> : ZERO<numType>; }
     IDType ID()const{return id;}
 
     const IDType id;
