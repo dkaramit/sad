@@ -8,22 +8,26 @@ Simple Automatic Differentiation (in ```C++```)
 
 ## Expressions and Variables
 
-There are two objects that the user needs to know; epxressions and variables. More specifically, both are instances of the class `template<typename numType> sad::Expression`. However, they behave differently depending on how they were initialized.
-
-A variable is an instance of the `Expression` class with respect to which we can differentiate.  Variables are *only* initialized by the default constructor. For example, in
+There is one basic class: `sad::Expression<numType>`. The way instances are declared determine their function. Declaring an instance as
 ```C++
-sad::Expression x; 
+sad::Expression<double> x; 
 ```
-`x` is a variable.
+declares a variable that, when evaluated (see later), returns a double. 
 
-Expressions are instances of the `Expression` class composed of variables and operations. For example, in 
+Declaring an instance as
 ```C++
-sad::Expression x; 
-sad::Expression y; 
-
-sad::Expression f=x+y;
+sad::Expression<double> c=2; 
 ```
-`x` and `y` are variables, and `f` is an expression.
+declares a constant that, holds the value `(double)2`. Note that you can skip the template parameter here! 
+
+
+Declaring an instance through another Expression
+```C++
+sad::Expression<double> f=x+c; 
+```
+declares a general expression. 
+
+This library is all about manipulating such expressions!
 
 ### Assignment
 We can assign expressions to other expressions. Example:
@@ -40,14 +44,13 @@ There are two functions that the user needs to know; `template<typename numType>
 
 The first, `sad::evaluate` takes an instance of the `Expression`, and a `std::map<unsigned int, numType>` class and returns its value setting the variables at the values described in the map.  
 
-The `sad::derivative` function takes at least two instances of the `Expression` class and returns a new expression which is the derivative of the first with respect to the others. FoR example,
+The `sad::derivative` function takes at least two instances of the `Expression` class and returns a new expression which is the derivative of the first with respect to the others. For example,
 
 ```C++
-sad::Expression x; 
-sad::Expression y; 
+sad::Expression<double> x,y; 
 sad::Expression f=x+y;
 
-std::map at=sad::at<LD>({x,y},{6,2}) ;
+std::map at=sad::at(std::vector{x,y},std::vector{6,2}) ;
 
 evaluate(f,at);//returns the value of x+y
 
@@ -56,13 +59,12 @@ derivative(f,x,y);// returns \partial^2f/\partialx \partialy
 derivative(f,x,y,y);// returns \partial^3f/\partialx \partialy \partialy 
 ```
 
-If we differentiate with respect to an expression, we get an expression that has the value of $0$. That is, in the previous example, `derivative(f,f);` returns an instance of `Expression` with the value $0$. 
+If we differentiate with respect to an expression, we get an expression that has the value of $0$. That is, in the previous example, `derivative(f,f);` returns an instance of `Expression` with the value `0`. 
+
+Note: you only need to explicitely use a template parameter for variables. All other instances can deduct the type since `c++17`.
 
 
 ## To-do:
-- [ ] IMPORTANT: Allow different types by playing with `numType`.
 - [ ] Implement as many functions as possible.
 - [ ] Code generation for faster execution.
-- [ ] Documentation.
-- [ ] Allow operations between expressions of different numeric types.
 
