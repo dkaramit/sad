@@ -7,6 +7,9 @@
 #define PPF std::cout<<__PRETTY_FUNCTION__<<"\n"
 
 namespace sad{
+using IDType=unsigned int;
+
+
 /*declaration of classes*/
 template<typename numType> class AbstractExpression;
 template<typename numType> class Variable;

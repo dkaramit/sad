@@ -13,7 +13,7 @@ int main(){
     sad::Expression z=x;     
     // z=5; //runtime error!
 
-    z=3+2*z*y*x*9+1;
+    z=z+y;
 
     cout<<z<<"\n";   
     cout<<derivative(z,x)<<"\n";   

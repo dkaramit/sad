@@ -35,7 +35,7 @@ class Expression{
     static auto constant(const numType &value){return Expression<numType>(value,false);}
     
     numType evaluate()const;
-    Expression derivative(const unsigned int &)const;
+    Expression derivative(const IDType &)const;
     
     Expression& operator=(const numType &);
     // Expression& operator=(numType &&);
@@ -53,13 +53,10 @@ class Expression{
     bool isVar()const{return is_var;}
     
     //if this instance is a variable, return its ID. If it is not, returns 0.
-    unsigned int ID()const{ 
-        if(isVar()){return getVar()->id;}
-        return 0;
-    }
+    IDType ID()const{ return expr_ptr->ID(); }
     
 
-    static unsigned int  TotalNumberOfVariables(){ return Variable<numType> :: NumberOfVars;}
+    static IDType  TotalNumberOfVariables(){ return Variable<numType> :: NumberOfVars;}
     private:
     AbsExp_ptr<numType> expr_ptr;
     const bool is_var;
@@ -111,7 +108,7 @@ Expression<numType>& Expression<numType>::operator=(const numType &value){
 
 /*derivative and evaluate of Expression*/
 template<typename numType>
-Expression<numType> Expression<numType>::derivative(const unsigned int &wrt)const{
+Expression<numType> Expression<numType>::derivative(const IDType &wrt)const{
     if(wrt == 0) {return ZERO<numType>;}
     return expr_ptr->derivative(wrt);
 }

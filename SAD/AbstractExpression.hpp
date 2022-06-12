@@ -22,7 +22,8 @@ class AbstractExpression{
     
     private:
     virtual numType evaluate()const=0;
-    virtual Expression<numType> derivative(const unsigned int &id)const=0;
+    virtual Expression<numType> derivative(const IDType &)const=0;
+    virtual IDType ID(){return 0;}
 };
 
 template<typename numType>
@@ -33,16 +34,18 @@ class Variable:public AbstractExpression<numType>{
 
     private:
     numType evaluate()const{return this->value;}
-    Expression<numType> derivative(const unsigned int &wrt)const{
+    Expression<numType> derivative(const IDType &wrt)const{
         //check if we differentiate wrt this variable
         if(this->id==wrt){return ONE<numType>;}//if we differentiate wrt the same variable, return an Expression that evaluates to 1
     	return ZERO<numType>;//otherwise, return an Expression that evaluates to 0
     }
+    IDType ID(){return id;}
+
     numType value;
-    const unsigned int id;
-    static unsigned int NumberOfVars;
+    const IDType id;
+    static IDType NumberOfVars;
 };
-template<typename numType> unsigned int Variable<numType>::NumberOfVars=0;
+template<typename numType> IDType Variable<numType>::NumberOfVars=0;
 
 
 }
