@@ -3,16 +3,18 @@
 
 using std::cout;
 
-using LD = double;
+using LD = long double;
 
 int main(){
 
     sad::Expression<LD> x,y;
     sad::Expression z=x;
 
-    z=sad::cos(x / sin(y));
 
-    std::map at=sad::at(std::vector{x,y},std::vector{6,2}) ;
+    std::map at=sad::at(std::vector{x,y},std::vector{0.33,2.}) ;
+    
+    // z=sad::abs(x,at);
+    z=sad::cos(x/sad::sin(y));
 
     cout<<evaluate(z, at )<<"\n";
     cout<<evaluate(derivative(z,x), at )<<"\n";

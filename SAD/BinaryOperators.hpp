@@ -29,12 +29,18 @@ template<typename numType, typename LD> Expression<numType> OP(const Expression<
 
 namespace sad{
 
+    DefineBinaryOperatorClass(operator+,Addition, LH.evaluate(at)+RH.evaluate(at) , LH.derivative(wrt) + RH.derivative(wrt))
+    DefineBinaryOperatorClass(operator-,Subtruction, LH.evaluate(at)-RH.evaluate(at) , LH.derivative(wrt) - RH.derivative(wrt))
+    DefineBinaryOperatorClass(operator*,Multiplication, LH.evaluate(at)*RH.evaluate(at) , LH.derivative(wrt)*RH+LH*RH.derivative(wrt))
+    DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
-DefineBinaryOperatorClass(operator+,Addition, LH.evaluate(at)+RH.evaluate(at) , LH.derivative(wrt) + RH.derivative(wrt))
-DefineBinaryOperatorClass(operator-,Subtruction, LH.evaluate(at)-RH.evaluate(at) , LH.derivative(wrt) - RH.derivative(wrt))
-DefineBinaryOperatorClass(operator*,Multiplication, LH.evaluate(at)*RH.evaluate(at) , LH.derivative(wrt)*RH+LH*RH.derivative(wrt))
-DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
+    template<typename numType>
+    Expression<numType> abs(const Expression<numType> &expr, const map<IDType,numType> &at){
+        if ( expr.evaluate(at) == static_cast<numType>(0) ){return ZERO<numType>; }
+        if ( expr.evaluate(at) > static_cast<numType>(0) ){return expr;}
+        return -expr;
+    }
 
 }
 

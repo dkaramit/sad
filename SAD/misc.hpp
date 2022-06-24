@@ -25,6 +25,7 @@ template<typename numType> using AbsExp_ptr=std::shared_ptr<AbstractExpression<n
 
 /*----these constants will be helpful---*/
 template<typename numType>static const auto ONE     = Expression<numType>::constant(1);
+template<typename numType>static const auto TWO     = Expression<numType>::constant(2);
 template<typename numType>static const auto ZERO    = Expression<numType>::constant(0);
 template<typename numType>static const auto NEG_ONE = Expression<numType>::constant(-1);
 template<typename numType>static const auto HALF    = Expression<numType>::constant(0.5);

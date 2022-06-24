@@ -31,11 +31,31 @@ namespace sad{
     template<typename numType> class Cos;
 
     DefineUnaryOperatorClass(operator-,Neg, - expr.evaluate(at), - expr.derivative(wrt) )
-    DefineUnaryOperatorClass(sin,Sin, std::sin(expr.evaluate(at)),  expr.derivative(wrt)*toExpression(Cos)  )
-    DefineUnaryOperatorClass(cos,Cos, std::cos(expr.evaluate(at)),  - expr.derivative(wrt)*toExpression(Sin) )
+    DefineUnaryOperatorClass(sin,Sin, std::sin(expr.evaluate(at)),  expr.derivative(wrt)*cos(expr)  )
+    DefineUnaryOperatorClass(cos,Cos, std::cos(expr.evaluate(at)),  - expr.derivative(wrt)*sin(expr) )
+
+    DefineUnaryOperatorClass(log,Log,std::log(expr.evaluate(at)),(  expr.derivative(wrt)/expr ))
+
+    DefineUnaryOperatorClass(exp,Exp,std::exp(expr.evaluate(at)), expr.derivative(wrt)*exp(expr))
+
+
+    template<typename numType> auto tan(const Expression<numType> &expr){return sin(expr)/cos(expr);}
+    template<typename numType> auto tan(const numType &x){return  tan( Expression<numType>::constant(x) );}
+
+    DefineUnaryOperatorClass(atan,ArcTan, std::atan(expr.evaluate(at)) ,( expr.derivative(wrt)/( ONE<numType> + expr * expr) ))
+
+    template<typename numType>
+    auto tanh(const Expression<numType> &x){ return (exp(TWO<numType>*x)-ONE<numType>)/(exp(TWO<numType>*x)+ONE<numType>);}
+    template<typename numType> auto tanh(const numType &x){ return   tanh( Expression<numType>::constant(x) );}
+
+    template<typename numType> auto atanh(const Expression<numType> &x){ return   HALF<numType>*( log(ONE<numType>+x) - log(ONE<numType>-x)  ) ;}
+    template<typename numType> auto atanh(const numType &x){ return  atanh( Expression<numType>::constant(x) );}
+
+
 
 }
 
-
-
+#undef DefineUnaryOperatorClass
+#undef DefineUnaryOperator
+#undef toExpression
 #endif
