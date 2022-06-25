@@ -35,13 +35,6 @@ namespace sad{
     DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
 
-    template<typename numType>
-    Expression<numType> abs(const Expression<numType> &expr, const map<IDType,numType> &at){
-        if ( expr.evaluate(at) == static_cast<numType>(0) ){return ZERO<numType>; }
-        if ( expr.evaluate(at) > static_cast<numType>(0) ){return expr;}
-        return -expr;
-    }
-
 }
 
 

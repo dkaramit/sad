@@ -31,6 +31,15 @@ namespace sad{
     template<typename numType> class Cos;
 
     DefineUnaryOperatorClass(operator-,Neg, - expr.evaluate(at), - expr.derivative(wrt) )
+
+    template<typename numType> auto n_sign(const numType &x){
+        if(x>0){return static_cast<numType>(1);}
+        if(x<0){return static_cast<numType>(-1);}
+        return static_cast<numType>(0);
+    }
+    DefineUnaryOperatorClass(sign,Sign,n_sign(expr.evaluate(at)),ZERO<numType>)
+    DefineUnaryOperatorClass(abs,Abs,std::abs(expr.evaluate(at)),sign(expr)*expr.derivative(wrt))
+
     DefineUnaryOperatorClass(sin,Sin, std::sin(expr.evaluate(at)),  expr.derivative(wrt)*cos(expr)  )
     DefineUnaryOperatorClass(cos,Cos, std::cos(expr.evaluate(at)),  - expr.derivative(wrt)*sin(expr) )
 
