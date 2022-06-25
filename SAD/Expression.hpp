@@ -15,7 +15,7 @@
 namespace sad{
 
 /*The Expression class. This will be the interface to access all other classes.*/
-template<typename numType>
+template<typename numType=double>
 class Expression{
     friend class Variable<numType>;//we want the Variable class to have access to expr_ptr in order to know wrt what we differentiate
     
