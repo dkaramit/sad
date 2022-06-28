@@ -35,6 +35,33 @@ namespace sad{
     DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
 
+
+
+    template<typename numType> auto _non_zero2(const numType &x,const numType &y){
+        if(y==0){return static_cast<numType>(0);}
+        return  x*log(x)*y;
+    }
+
+    DefineBinaryOperatorClass(pow_2nd_term,Pow_2nd_Term,_non_zero2(LH.evaluate(at),RH.evaluate(at)),LH*log(LH)*RH)
+
+
+    template<typename numType>
+    class Power: public AbstractExpression<numType>{ 
+        public:
+        Power(const Expression<numType> &LH, const Expression<numType> &RH):LH(LH),RH(RH){}
+        friend class Expression<numType>;
+        private:
+        Expression<numType> LH,RH;
+        Expression<numType> derivative(const unsigned int &wrt)const{
+            return pow( LH,RH - ONE<numType> ) * (RH*LH.derivative(wrt) + pow_2nd_term(LH,RH.derivative(wrt))  );
+        };
+        
+        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
+    };
+    DefineBinaryOperator(pow,Power)
+
+
+
 }
 
 

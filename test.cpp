@@ -10,9 +10,11 @@ int main(){
     sad::Expression z=x;
 
 
-    std::map at=sad::at(std::vector{x,y},std::vector{2,3}) ;
+    std::map at=sad::at(std::vector{x,y},std::vector{0,0}) ;
     
-    z=sad::abs(sad::cos(x/sad::sin(y))) ;
+    // z=sad::abs(sad::cos(x/sad::sin(y))) ;
+    z=sad::pow(x,y) ;
+    // z=sad::pow(x,3) ;
 
     cout<<evaluate(z, at )<<"\n";
     cout<<evaluate(derivative(z,x), at )<<"\n";
@@ -20,7 +22,6 @@ int main(){
 
 
     cout<<evaluate(derivative(z,x,y,x,x,x), at )<<"\n";
-
 
     return 0;
 }
