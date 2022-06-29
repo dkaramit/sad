@@ -34,31 +34,61 @@ namespace sad{
     DefineBinaryOperatorClass(operator*,Multiplication, LH.evaluate(at)*RH.evaluate(at) , LH.derivative(wrt)*RH+LH*RH.derivative(wrt))
     DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
+    // DefineBinaryOperatorClass(pow,Power,std::pow(LH.evaluate(at), RH.evaluate(at)),exp(log(LH)*RH).derivative(wrt))
 
-
-
-    template<typename numType> auto _non_zero2(const numType &x,const numType &y){
-        if(y==0){return static_cast<numType>(0);}
-        return  x*log(x)*y;
-    }
-
-    DefineBinaryOperatorClass(pow_2nd_term,Pow_2nd_Term,_non_zero2(LH.evaluate(at),RH.evaluate(at)),LH*log(LH)*RH)
 
 
     template<typename numType>
-    class Power: public AbstractExpression<numType>{ 
+    class Power_expr: public AbstractExpression<numType>{ 
         public:
-        Power(const Expression<numType> &LH, const Expression<numType> &RH):LH(LH),RH(RH){}
+        Power_expr(const Expression<numType> &LH, const Expression<numType> &RH):LH(LH),RH(RH){}
         friend class Expression<numType>;
         private:
         Expression<numType> LH,RH;
         Expression<numType> derivative(const unsigned int &wrt)const{
-            return pow( LH,RH - ONE<numType> ) * (RH*LH.derivative(wrt) + pow_2nd_term(LH,RH.derivative(wrt))  );
+            return pow( LH,RH - ONE<numType> ) * ( RH*LH.derivative(wrt) +  LH*log(LH)*RH.derivative(wrt)  );
         };
         
         numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
     };
-    DefineBinaryOperator(pow,Power)
+
+    template<typename numType>
+    class Power_num1: public AbstractExpression<numType>{ 
+        public:
+        Power_num1(const numType &LH,const Expression<numType> &RH):LH(LH),RH(RH){}
+        friend class Expression<numType>;
+        private:
+        
+        numType LH;
+        Expression<numType> RH;
+
+        Expression<numType> derivative(const unsigned int &wrt)const{
+            return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*RH.derivative(wrt)  ;
+        };
+        
+        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));};
+    };
+
+    template<typename numType>
+    class Power_num2: public AbstractExpression<numType>{ 
+        public:
+        Power_num2(const Expression<numType> &LH, const numType &RH):LH(LH),RH(RH){}
+        friend class Expression<numType>;
+        private:
+        
+        Expression<numType> LH;
+        numType RH;
+
+        Expression<numType> derivative(const unsigned int &wrt)const{
+            return pow( LH,RH - ONE<numType> ) *  RH*LH.derivative(wrt) ;
+        };
+        
+        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);};
+    };
+
+    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); }\
+    template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); }\
+    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); }\
 
 
 
