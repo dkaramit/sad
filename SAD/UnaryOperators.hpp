@@ -19,7 +19,8 @@
 DefineUnaryOperator(Operator,ClassName)
 
 #define DefineUnaryOperator(OP,CLASS) \
-template<typename numType> Expression<numType> OP(const Expression<numType> &expr){return AbsExp_ptr<numType>(new CLASS<numType>(expr)); }
+template<typename numType> Expression<numType> OP(const Expression<numType> &expr){return AbsExp_ptr<numType>(new CLASS<numType>(expr)); }\
+template<typename numType> Expression<numType> OP(const numType &x){return Expression<numType>::constant(x); }
 
 
 #define toExpression(Class) Expression<numType>( AbsExp_ptr<numType>(new Class<numType>(expr) ) )

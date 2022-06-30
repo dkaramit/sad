@@ -34,8 +34,6 @@ namespace sad{
     DefineBinaryOperatorClass(operator*,Multiplication, LH.evaluate(at)*RH.evaluate(at) , LH.derivative(wrt)*RH+LH*RH.derivative(wrt))
     DefineBinaryOperatorClass(operator/,Division, LH.evaluate(at)/RH.evaluate(at) , LH.derivative(wrt)/RH - LH*RH.derivative(wrt)/RH/RH)
 
-    // DefineBinaryOperatorClass(pow,Power,std::pow(LH.evaluate(at), RH.evaluate(at)),exp(log(LH)*RH).derivative(wrt))
-
 
 
     template<typename numType>
