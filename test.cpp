@@ -3,8 +3,6 @@
 
 using std::cout;
 
-
-
 int main(){
 
     // sad::Expression<long double> x,y;
@@ -16,15 +14,14 @@ int main(){
     
     z=1.-z-1./y/x/1. -1. ;
     z=z+x;
-    z=z+y;
+    z=z*y;
     z=sad::sin(z/y);
     z=sad::exp(sad::abs( z )*2.);
 
     cout<<evaluate(z, at )<<"\n";
     cout<<evaluate(derivative(z,x), at )<<"\n";
     cout<<evaluate(derivative(z,y), at )<<"\n";
-
-    cout<<evaluate(derivative(z,x,y,x,x,y), at )<<"\n";
-
+    cout<<evaluate(derivative(z,x,y,x,x), at )<<"\n";
+    
     return 0;
 }
