@@ -12,11 +12,13 @@ int main(){
     sad::Expression z=x;
 
 
-    std::map at=sad::at(std::vector{x,y},std::vector{1.,4.1}) ;
+    std::map at=sad::at(std::vector{x,y},std::vector{-1.,3.1}) ;
     
-    // z=sad::abs(sad::cos(x/sad::sin(y))) ;
-    // z=sad::pow(sad::abs(sad::sin(3.+x)),y) ;
-    z=sad::pow(x,sad::abs(x)+y) ;
+    z=1.-z-1./y/x/1. -1. ;
+    z=z+x;
+    z=z+y;
+    z=sad::sin(z/y);
+    z=sad::exp(sad::abs( z )*2.);
 
     cout<<evaluate(z, at )<<"\n";
     cout<<evaluate(derivative(z,x), at )<<"\n";
