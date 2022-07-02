@@ -19,6 +19,8 @@ template<typename numType=double>
 class Expression{
     friend class Variable<numType>;//we want the Variable class to have access to expr_ptr in order to know wrt what we differentiate
     
+    
+
     public:
     ~Expression()=default;
     Expression();
@@ -41,14 +43,23 @@ class Expression{
     Expression& operator=(const Expression &);
     Expression& operator=(Expression &&);
 
+    Expression& operator=(const numType &)=delete;
+    Expression& operator=(numType &&)=delete;
+
+
     //if this instance is a variable, return its ID. If it is not, returns 0.
     IDType ID()const{ return expr_ptr->ID(); }
+    
+    //use to check if two expression are the same (correspond to the same address)
+    bool Eq(const Expression<numType> &other)const{
+        if (this->AbsExp_address() == other.AbsExp_address()){return true;}
+        return false;
+    }
 
     private:
     AbsExp_ptr<numType> expr_ptr;
+    auto AbsExp_address()const{ return expr_ptr.get(); }
 };
-
-
 
 /*Constructors of Expression*/
 template<typename numType> Expression<numType>::Expression():expr_ptr( AbsExp_ptr<numType> (new Variable<numType>) ){}

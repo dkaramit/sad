@@ -7,11 +7,10 @@ int main(){
 
     // sad::Expression<long double> x,y;
     sad::Expression x,y;
-    sad::Expression z=x;
+    sad::Expression z=sad::tanh(x);
 
+    std::map at=sad::at(std::vector{x,y},std::vector{2,3.1}) ;
 
-    std::map at=sad::at(std::vector{x,y},std::vector{-1.,3.1}) ;
-    
     z=1.-z-1./y/x/1. -1. ;
     z=z+x;
     z=z*y;
