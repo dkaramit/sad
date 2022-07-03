@@ -83,7 +83,7 @@ Expression<numType>& Expression<numType>::operator=(Expression &&expr){ expr_ptr
 
 /*derivative and evaluate of Expression*/
 template<typename numType>
-Expression<numType> Expression<numType>::derivative(const IDType &wrt)const{ return wrt==0? 0 : expr_ptr->derivative(wrt); }
+Expression<numType> Expression<numType>::derivative(const IDType &wrt)const{ return wrt==0? static_cast<numType>(0) : expr_ptr->derivative(wrt); }
 
 template<typename numType>
 numType Expression<numType>::evaluate(const map<IDType,numType> &at)const{ return expr_ptr->evaluate(at); }
