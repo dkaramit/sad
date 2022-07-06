@@ -17,7 +17,14 @@ namespace sad{
         private:
         Expression<numType> LH,RH;
         Expression<numType> derivative(const unsigned int &wrt)const{
-            return pow( LH,RH - ONE<numType> ) * ( RH*LH.derivative(wrt) +  LH*log(LH)*RH.derivative(wrt)  );
+            auto DRH=RH.derivative(wrt);
+            auto DLH=LH.derivative(wrt);
+
+            if (DRH.Eq(ZERO<numType>) and DLH.Eq(ZERO<numType>)){return ZERO<numType>;}
+            if (DRH.Eq(ZERO<numType>)){return pow( LH,RH - ONE<numType> ) * RH*DLH;}
+            if (DLH.Eq(ZERO<numType>)){return pow( LH,RH - ONE<numType> ) * LH*log(LH)*DRH;}
+
+            return pow( LH,RH - ONE<numType> ) * ( RH*DLH + LH*log(LH)*DRH );
         };
         
         numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
@@ -34,7 +41,10 @@ namespace sad{
         Expression<numType> RH;
 
         Expression<numType> derivative(const unsigned int &wrt)const{
-            return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*RH.derivative(wrt)  ;
+            auto DRH=RH.derivative(wrt);
+            if (DRH.Eq(ZERO<numType>)){return ZERO<numType>;}
+
+            return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*DRH;
         };
         
         numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));};
@@ -51,7 +61,10 @@ namespace sad{
         numType RH;
 
         Expression<numType> derivative(const unsigned int &wrt)const{
-            return pow( LH,RH - ONE<numType> ) *  RH*LH.derivative(wrt) ;
+            auto DLH=LH.derivative(wrt);
+            if (DLH.Eq(ZERO<numType>)){return ZERO<numType>;}
+
+            return pow( LH,RH - ONE<numType> )*RH*DLH;
         };
         
         numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);};

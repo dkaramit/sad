@@ -7,7 +7,7 @@ CC=g++
 OPT=-O3
 STD=-std=c++17 #in order to utilize type deduction, use c++17
 
-FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall
+FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall -pedantic
 
 
 all: test.run examples

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <complex>
 #include<memory>
 #include<valarray>
 #include<type_traits>
@@ -14,13 +15,19 @@
 
 namespace sad{
 
+template<typename T> struct is_not_complex                 {static constexpr bool value=true ;};
+template<typename T> struct is_not_complex<std::complex<T>>{static constexpr bool value=false;};
+
+
 /*The Expression class. This will be the interface to access all other classes.*/
 template<typename numType=double>
 class Expression{
+
+    static_assert(is_not_complex<numType>::value and std::is_floating_point<numType>::value, "Use only real floating point numbers!");
+
+
     friend class Variable<numType>;//we want the Variable class to have access to expr_ptr in order to know wrt what we differentiate
     
-    
-
     public:
     ~Expression()=default;
     Expression();
@@ -87,8 +94,6 @@ Expression<numType> Expression<numType>::derivative(const IDType &wrt)const{ ret
 
 template<typename numType>
 numType Expression<numType>::evaluate(const map<IDType,numType> &at)const{ return expr_ptr->evaluate(at); }
-
-
 
 }
 #endif
