@@ -45,9 +45,9 @@ namespace sad{
             if (DRH.is_ZERO()){return ZERO<numType>;}
 
             return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*DRH;
-        };
+        }
         
-        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));};
+        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));}
     };
 
     template<typename numType>
@@ -65,14 +65,14 @@ namespace sad{
             if (DLH.is_ZERO()){return ZERO<numType>;}
 
             return pow( LH,RH - ONE<numType> )*RH*DLH;
-        };
+        }
         
-        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);};
+        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
     };
 
-    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); }\
-    template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); }\
-    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); }\
+    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); }
+    template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); }
+    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); }
 
 }
 
