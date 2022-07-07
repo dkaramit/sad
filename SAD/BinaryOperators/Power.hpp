@@ -70,7 +70,13 @@ namespace sad{
         numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
     };
 
-    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); }
+    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){
+        if(LH.is_ZERO()){return ZERO<numType>;}
+        if(RH.is_ZERO()){return ONE<numType>;}
+        if(RH.is_ONE()){return LH;}
+
+        return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); 
+    }
     template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); }
     template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); }
 
