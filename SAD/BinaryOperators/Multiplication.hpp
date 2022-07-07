@@ -56,7 +56,14 @@ template<typename numType>
         numType evaluate(const map<IDType,numType> &at)const{return LH*RH.evaluate(at);}
     };
 
-template<typename numType> Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Multiplication_expr<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){
+    if(LH.is_ZERO() or RH.is_ZERO()){return ZERO<numType>;}
+    if(LH.is_ONE()){return RH;}
+    if(RH.is_ONE()){return LH;}
+
+
+    return AbsExp_ptr<numType>(new Multiplication_expr<numType>(LH,RH)); 
+}
 
 template<typename numType> Expression<numType> operator*(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Multiplication_numL<numType>(LH,RH)); }
 

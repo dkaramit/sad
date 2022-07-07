@@ -1,5 +1,5 @@
-#ifndef UnOp_H
-#define UnOp_H
+#ifndef BasicUnOp_H
+#define BasicUnOp_H
 
 #include <cmath> 
 

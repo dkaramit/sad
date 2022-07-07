@@ -64,6 +64,9 @@ template<typename numType>
 
 template<typename numType> Expression<numType> operator-(const Expression<numType> &LH, const Expression<numType> &RH){
     if(RH.Eq(LH)){return ZERO<numType>;}
+    if(LH.is_ZERO()){return -RH;}
+    if(RH.is_ZERO()){return LH;}
+
     return AbsExp_ptr<numType>(new Subtruction_expr<numType>(LH,RH)); 
 }
 

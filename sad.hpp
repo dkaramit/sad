@@ -9,7 +9,7 @@
 #include<SAD/BinaryOperators/Division.hpp>
 #include<SAD/BinaryOperators/Power.hpp>
 
-#include<SAD/UnaryOperators.hpp>
+#include<SAD/UnaryOperators/BasicUnaryOperators.hpp>
 
 
 #include<SAD/utilities.hpp>

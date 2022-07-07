@@ -44,7 +44,11 @@ template<typename numType>
     };
 
 
-template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Addition_expr<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){
+    if(LH.is_ZERO() and RH.is_ZERO()){return ZERO<numType>;}
+
+    return AbsExp_ptr<numType>(new Addition_expr<numType>(LH,RH)); 
+}
 
 template<typename numType> Expression<numType> operator+(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Addition_numL<numType>(LH,RH)); }
 

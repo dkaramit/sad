@@ -64,7 +64,12 @@ template<typename numType>
     };
 
 
-template<typename numType> Expression<numType> operator/(const Expression<numType> &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Division_expr<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator/(const Expression<numType> &LH, const Expression<numType> &RH){
+    if(LH.is_ZERO()){return ZERO<numType>;}
+    if(RH.is_ONE()){return LH;}
+
+    return AbsExp_ptr<numType>(new Division_expr<numType>(LH,RH)); 
+}
 
 template<typename numType> Expression<numType> operator/(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Division_numL<numType>(LH,RH)); }
 
