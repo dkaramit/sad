@@ -63,6 +63,11 @@ class Expression{
         return false;
     }
 
+    //use to check if the instance is equal to ZERO
+    bool is_ZERO()const{
+        return this->Eq(ZERO<numType>);
+    }
+
     private:
     AbsExp_ptr<numType> expr_ptr;
     auto AbsExp_address()const{ return expr_ptr.get(); }

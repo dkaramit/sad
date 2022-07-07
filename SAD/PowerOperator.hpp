@@ -20,9 +20,9 @@ namespace sad{
             auto DRH=RH.derivative(wrt);
             auto DLH=LH.derivative(wrt);
 
-            if (DRH.Eq(ZERO<numType>) and DLH.Eq(ZERO<numType>)){return ZERO<numType>;}
-            if (DRH.Eq(ZERO<numType>)){return pow( LH,RH - ONE<numType> ) * RH*DLH;}
-            if (DLH.Eq(ZERO<numType>)){return pow( LH,RH - ONE<numType> ) * LH*log(LH)*DRH;}
+            if (DRH.is_ZERO() and DLH.is_ZERO()){return ZERO<numType>;}
+            if (DRH.is_ZERO()){return pow( LH,RH - ONE<numType> ) * RH*DLH;}
+            if (DLH.is_ZERO()){return pow( LH,RH - ONE<numType> ) * LH*log(LH)*DRH;}
 
             return pow( LH,RH - ONE<numType> ) * ( RH*DLH + LH*log(LH)*DRH );
         };
@@ -42,7 +42,7 @@ namespace sad{
 
         Expression<numType> derivative(const unsigned int &wrt)const{
             auto DRH=RH.derivative(wrt);
-            if (DRH.Eq(ZERO<numType>)){return ZERO<numType>;}
+            if (DRH.is_ZERO()){return ZERO<numType>;}
 
             return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*DRH;
         };
@@ -62,7 +62,7 @@ namespace sad{
 
         Expression<numType> derivative(const unsigned int &wrt)const{
             auto DLH=LH.derivative(wrt);
-            if (DLH.Eq(ZERO<numType>)){return ZERO<numType>;}
+            if (DLH.is_ZERO()){return ZERO<numType>;}
 
             return pow( LH,RH - ONE<numType> )*RH*DLH;
         };
