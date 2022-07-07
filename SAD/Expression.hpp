@@ -68,6 +68,11 @@ class Expression{
         return this->Eq(ZERO<numType>);
     }
 
+    //use to check if the instance is equal to ONE
+    bool is_ONE()const{
+        return this->Eq(ONE<numType>);
+    }
+
     private:
     AbsExp_ptr<numType> expr_ptr;
     auto AbsExp_address()const{ return expr_ptr.get(); }

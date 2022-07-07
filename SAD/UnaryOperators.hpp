@@ -4,7 +4,6 @@
 #include <cmath> 
 
 #include<SAD/Expression.hpp>
-#include<SAD/BinaryOperators.hpp>
 
 #define DefineUnaryOperatorClass(Operator,ClassName,evalFunc_expr,derivFunc_expr,evalFunc_num)\
 template<typename numType>\
@@ -14,7 +13,10 @@ template<typename numType>\
         friend class Expression<numType>;\
         private:\
         Expression<numType> expr;\
-        Expression<numType> derivative(const unsigned int &wrt)const{return  derivFunc_expr;}\
+        Expression<numType> derivative(const unsigned int &wrt)const{\
+            if(expr.is_ZERO()){return ZERO<numType>;}\
+            return  derivFunc_expr;\
+        }\
         numType evaluate(const map<IDType,numType> &at)const{return evalFunc_expr;}\
     };\
 template<typename numType>\
@@ -43,7 +45,13 @@ template<typename numType>
         friend class Expression<numType>;
         private:
         Expression<numType> expr;
-        Expression<numType> derivative(const unsigned int &wrt)const{return  -expr.derivative(wrt);}
+        Expression<numType> derivative(const unsigned int &wrt)const{
+            auto Dexpr=expr.derivative(wrt);
+
+            if(Dexpr.is_ZERO()){return ZERO<numType>;}
+
+            return  -expr.derivative(wrt);
+        }
         numType evaluate(const map<IDType,numType> &at)const{return -expr.evaluate(at);}
     };    
 template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){return AbsExp_ptr<numType>(new Negation<numType>(expr)); }

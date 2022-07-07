@@ -5,6 +5,9 @@
 #include<vector>
 #include<SAD/Expression.hpp>
 
+#define msg(text) std::cout<<text
+#define lb std::cout<<"\n"
+
 
 namespace sad{
 

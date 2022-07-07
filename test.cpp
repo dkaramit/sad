@@ -6,18 +6,20 @@ using std::cout;
 int main(){
 
     sad::Expression x,y;
-    sad::Expression z=x;
 
-    std::map at=sad::at(std::vector{x,y},std::vector{-1.,3.}) ;
+    std::map at=sad::at(std::vector{x,y},std::vector{0.3,3.}) ;
     
-    z=y/x+z+1.;
-    z=z-x;
-    z=z*y;
-    z=sin(z/y);
-    z=exp( z );
-    z=tanh( -z*y );
-    z=log( abs(z)/3. );
-    z=pow(abs(tan(z)),y);
+    sad::Expression z=tan(x)*sin(y);
+
+    // sad::Expression z=tan(1./sad::Expression<double>::constant(2.1)/x/sad::Expression<double>::constant(2)/y/1.);
+    // z=y/x+z+1.;
+    // z=z-x;
+    // z=z*y;
+    // z=sin(z/y);
+    // z=exp( z );
+    // z=tanh( -z*y );
+    // z=log( abs(z)/3. );
+    // z=pow(abs(tan(z)),y);
 
     cout<<evaluate(z, at)<<"\n";
 

@@ -2,8 +2,13 @@
 #define SAD_H
 
 #include<SAD/Expression.hpp>
-#include<SAD/BinaryOperators.hpp>
-#include<SAD/PowerOperator.hpp>
+
+#include<SAD/BinaryOperators/Addition.hpp>
+#include<SAD/BinaryOperators/Subtruction.hpp>
+#include<SAD/BinaryOperators/Multiplication.hpp>
+#include<SAD/BinaryOperators/Division.hpp>
+#include<SAD/BinaryOperators/Power.hpp>
+
 #include<SAD/UnaryOperators.hpp>
 
 
