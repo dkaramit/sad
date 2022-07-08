@@ -7,6 +7,10 @@
 
 #include<SAD/BinaryOperators/Multiplication.hpp>
 
+#define Simplifications if(is_ZERO(LH)){return -RH;} if(is_ZERO(RH)){return LH;}
+
+
+
 namespace sad{
 
 template<typename numType>
@@ -16,17 +20,7 @@ template<typename numType>
         friend class Expression<numType>;
         private:
         Expression<numType> LH,RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            auto DRH=RH.derivative(wrt);
-            
-            if(DLH.is_ZERO() and DRH.is_ZERO()){return ZERO<numType>;}
-            
-            if(DLH.is_ZERO()){return static_cast<numType>(-1)*DRH;}
-            if(DRH.is_ZERO()){return DLH;}
-
-            return DLH - DRH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return LH.derivative(wrt) - RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return  LH.evaluate(at)-RH.evaluate(at);}
     };
 template<typename numType>
@@ -37,13 +31,7 @@ template<typename numType>
         private:
         numType LH;
         Expression<numType> RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DRH=RH.derivative(wrt);
-
-            if(DRH.is_ZERO()){return ZERO<numType>;}
-
-            return  -DRH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return  -RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH-RH.evaluate(at);}
     };
 template<typename numType>
@@ -54,27 +42,29 @@ template<typename numType>
         private:
         Expression<numType> LH;
         numType RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            return  DLH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)-RH;}
     };
 
 
 template<typename numType> Expression<numType> operator-(const Expression<numType> &LH, const Expression<numType> &RH){
-    if(RH.Eq(LH)){return ZERO<numType>;}
-    if(LH.is_ZERO()){return -RH;}
-    if(RH.is_ZERO()){return LH;}
-
+    if(RH == LH){return ZERO<numType>;}
+    Simplifications    
     return AbsExp_ptr<numType>(new Subtruction_expr<numType>(LH,RH)); 
 }
 
-template<typename numType> Expression<numType> operator-(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Subtruction_numL<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator-(const numType &LH, const Expression<numType> &RH){
+    Simplifications    
+    return AbsExp_ptr<numType>(new Subtruction_numL<numType>(LH,RH)); 
+}
 
-template<typename numType> Expression<numType> operator-(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Subtruction_numR<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator-(const Expression<numType> &LH, const numType &RH){
+    Simplifications    
+    return AbsExp_ptr<numType>(new Subtruction_numR<numType>(LH,RH)); 
+}
 
 }
 
 
+#undef Simplifications
 #endif

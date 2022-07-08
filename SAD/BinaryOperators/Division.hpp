@@ -7,6 +7,8 @@
 
 #include<SAD/BinaryOperators/Multiplication.hpp>
 
+#define Simplifications if(is_ONE(RH)){return LH;}
+
 namespace sad{
 
 template<typename numType>
@@ -16,16 +18,7 @@ template<typename numType>
         friend class Expression<numType>;
         private:
         Expression<numType> LH,RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            auto DRH=RH.derivative(wrt);
-            
-            if(DLH.is_ZERO() and DRH.is_ZERO()){return ZERO<numType>;}
-            if(DLH.is_ZERO()){return -LH*DRH/RH/RH;}
-            if(DRH.is_ZERO()){return DLH/RH;}
-
-            return DLH/RH - LH*DRH/RH/RH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return LH.derivative(wrt)/RH - LH/(RH*RH)*RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return  LH.evaluate(at)/RH.evaluate(at);}
     };
 template<typename numType>
@@ -36,13 +29,7 @@ template<typename numType>
         private:
         numType LH;
         Expression<numType> RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DRH=RH.derivative(wrt);
-
-            if(DRH.is_ZERO()){return ZERO<numType>;}
-
-            return  -LH*DRH/RH/RH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return  -LH/(RH*RH)*RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH/RH.evaluate(at);}
     };
 template<typename numType>
@@ -53,29 +40,28 @@ template<typename numType>
         private:
         Expression<numType> LH;
         numType RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            
-            if(DLH.is_ZERO()){return ZERO<numType>;}
-            
-            return  DLH/RH ;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt)/RH; }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)/RH;}
     };
 
 
 template<typename numType> Expression<numType> operator/(const Expression<numType> &LH, const Expression<numType> &RH){
-    if(LH.is_ZERO()){return ZERO<numType>;}
-    if(RH.is_ONE()){return LH;}
-
+    Simplifications
     return AbsExp_ptr<numType>(new Division_expr<numType>(LH,RH)); 
 }
 
-template<typename numType> Expression<numType> operator/(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Division_numL<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator/(const numType &LH, const Expression<numType> &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Division_numL<numType>(LH,RH)); 
+}
 
-template<typename numType> Expression<numType> operator/(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Division_numR<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator/(const Expression<numType> &LH, const numType &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Division_numR<numType>(LH,RH)); 
+}
 
 }
 
 
+#undef Simplifications
 #endif

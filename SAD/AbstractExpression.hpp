@@ -28,6 +28,7 @@ class AbstractExpression{
     virtual numType evaluate(const map<IDType,numType> &)const=0;
     virtual Expression<numType> derivative(const IDType &)const=0;
     virtual IDType ID()const{return 0;}
+
 };
 
 template<typename numType>
@@ -46,7 +47,6 @@ class Constant:public AbstractExpression<numType>{
 
     numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
-
     const numType value;
 };
 

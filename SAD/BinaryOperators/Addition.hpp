@@ -6,6 +6,8 @@
 #include<SAD/BinaryOperators/Multiplication.hpp>
 #include<SAD/utilities.hpp>
 
+#define Simplifications if(is_ZERO(LH) and is_ZERO(RH)){return ZERO<numType>;} if(is_ZERO(LH)){return RH;} if(is_ZERO(RH)){return LH;} if(LH==RH){return TWO<numType>*LH;}
+
 
 namespace sad{
 
@@ -16,19 +18,7 @@ template<typename numType>
         friend class Expression<numType>;
         private:
         Expression<numType> LH,RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            auto DRH=RH.derivative(wrt);
-            
-            if(DLH.is_ZERO() and DRH.is_ZERO()){return ZERO<numType>;}
-            if(RH.Eq(LH)){return TWO<numType>*DLH;}
-
-
-            if(DLH.is_ZERO()){return DRH;}
-            if(DRH.is_ZERO()){return DLH;}
-
-            return  DLH + DRH;
-        }
+        Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt) + RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)+RH.evaluate(at);}
     };
 template<typename numType>
@@ -45,16 +35,22 @@ template<typename numType>
 
 
 template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){
-    if(LH.is_ZERO() and RH.is_ZERO()){return ZERO<numType>;}
-
+    Simplifications
     return AbsExp_ptr<numType>(new Addition_expr<numType>(LH,RH)); 
 }
 
-template<typename numType> Expression<numType> operator+(const numType &LH, const Expression<numType> &RH){return AbsExp_ptr<numType>(new Addition_numL<numType>(LH,RH)); }
+template<typename numType> Expression<numType> operator+(const numType &LH, const Expression<numType> &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Addition_numL<numType>(LH,RH)); 
+}
 
-template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const numType &RH){return AbsExp_ptr<numType>(new Addition_numL<numType>(RH,LH)); }
+template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const numType &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Addition_numL<numType>(RH,LH)); 
+}
 
 }
 
 
+#undef Simplifications
 #endif

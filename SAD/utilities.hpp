@@ -43,6 +43,19 @@ template<typename numType,typename... Args>
 Expression<numType> derivative(const Expression<numType> &Expr, const Args&... vars){ return  derivative(Expr, std::valarray<unsigned int>{vars.ID()...}) ;}
 
 
+template<typename numType>
+bool operator==(const Expression<numType> &LH, const Expression<numType> &RH){return LH.Eq(RH);}
+
+template<typename numType>
+bool is_ZERO(const Expression<numType> &expr){return expr.is_ZERO();}
+template<typename numType>
+bool is_ZERO(const numType &expr){return expr==static_cast<numType>(0);}
+
+template<typename numType>
+bool is_ONE(const Expression<numType> &expr){return expr.is_ONE();}
+template<typename numType>
+bool is_ONE(const numType &expr){return expr==static_cast<numType>(1);}
+
 
 }
 

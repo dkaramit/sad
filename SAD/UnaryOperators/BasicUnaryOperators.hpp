@@ -54,7 +54,10 @@ template<typename numType>
         }
         numType evaluate(const map<IDType,numType> &at)const{return -expr.evaluate(at);}
     };    
-template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){return AbsExp_ptr<numType>(new Negation<numType>(expr)); }
+template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){
+    if(is_ZERO(expr)){return ZERO<numType>;}
+    return AbsExp_ptr<numType>(new Negation<numType>(expr)); 
+}
 
 
     template<typename numType> auto n_sign(const numType &x){

@@ -4,97 +4,72 @@
 
 #include<SAD/Expression.hpp>
 #include<SAD/UnaryOperators/BasicUnaryOperators.hpp>
+#include<SAD/BinaryOperators/Multiplication.hpp>
+#include<SAD/BinaryOperators/Addition.hpp>
+#include<SAD/BinaryOperators/Subtruction.hpp>
 #include<SAD/utilities.hpp>
+
+#define Simplifications if(is_ZERO(RH)){return ONE<numType>;} if(is_ZERO(LH)){return ZERO<numType>;} if(is_ONE(LH)){return ONE<numType>;} if(is_ONE(RH)){return LH;}
 
 
 namespace sad{
 
-    template<typename numType>
-    class Power_expr: public AbstractExpression<numType>{ 
-        public:
-        Power_expr(const Expression<numType> &LH, const Expression<numType> &RH):LH(LH),RH(RH){}
-        friend class Expression<numType>;
-        private:
-        Expression<numType> LH,RH;
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DRH=RH.derivative(wrt);
-            auto DLH=LH.derivative(wrt);
+template<typename numType>
+class Power_expr: public AbstractExpression<numType>{ 
+    public:
+    Power_expr(const Expression<numType> &LH, const Expression<numType> &RH):LH(LH),RH(RH){}
+    friend class Expression<numType>;
+    private:
+    Expression<numType> LH,RH;
+    Expression<numType> derivative(const unsigned int &wrt)const{ 
+        auto DRH=RH.derivative(wrt);
+        auto DLH=LH.derivative(wrt);
 
-            if (DRH.is_ZERO() and DLH.is_ZERO()){return ZERO<numType>;}
-            if (DRH.is_ZERO()){return pow( LH,RH - ONE<numType> ) * RH*DLH;}
-            if (DLH.is_ZERO()){return pow( LH,RH - ONE<numType> ) * LH*log(LH)*DRH;}
-
-            return pow( LH,RH - ONE<numType> ) * ( RH*DLH + LH*log(LH)*DRH );
-        };
-        
-        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
+        return pow( LH,RH - ONE<numType> ) * ( RH*DLH + LH*log(LH)*DRH ); 
     };
+    numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
+};
 
-    template<typename numType>
-    class Power_num1: public AbstractExpression<numType>{ 
-        public:
-        Power_num1(const numType &LH,const Expression<numType> &RH):LH(LH),RH(RH){}
-        friend class Expression<numType>;
-        private:
-        
-        numType LH;
-        Expression<numType> RH;
-
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DRH=RH.derivative(wrt);
-            if (DRH.is_ZERO()){return ZERO<numType>;}
-
-            return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*DRH;
-        }
-        
-        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));}
-    };
-
-    template<typename numType>
-    class Power_num2: public AbstractExpression<numType>{ 
-        public:
-        Power_num2(const Expression<numType> &LH, const numType &RH):LH(LH),RH(RH){}
-        friend class Expression<numType>;
-        private:
-        
-        Expression<numType> LH;
-        numType RH;
-
-        Expression<numType> derivative(const unsigned int &wrt)const{
-            auto DLH=LH.derivative(wrt);
-            if (DLH.is_ZERO()){return ZERO<numType>;}
-
-            return pow( LH,RH - ONE<numType> )*RH*DLH;
-        }
-        
-        numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
-    };
-
-    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){
-        if(LH.is_ZERO()){return ZERO<numType>;}
-        if(RH.is_ZERO()){return ONE<numType>;}
-        if(LH.is_ONE()){return ONE<numType>;}
-        if(RH.is_ONE()){return LH;}
-
-        return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); 
-    }
-    template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){
-        if(LH == static_cast<numType>(0) ){return ZERO<numType>;}
-        if(RH.is_ZERO()){return ONE<numType>;}
-        if(LH == static_cast<numType>(1) ){return ONE<numType>;}
-        if(RH.is_ONE()){return LH;}
-
-        return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); 
-    }
-    template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){
-        if(LH.is_ZERO()){return ZERO<numType>;}
-        if(RH == static_cast<numType>(0) ){return ONE<numType>;}
-        if(LH.is_ONE()){return ONE<numType>;}
-        if(RH == static_cast<numType>(1) ){return LH;}
+template<typename numType>
+class Power_num1: public AbstractExpression<numType>{ 
+    public:
+    Power_num1(const numType &LH,const Expression<numType> &RH):LH(LH),RH(RH){}
+    friend class Expression<numType>;
+    private:
     
-        return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); 
-    }
+    numType LH;
+    Expression<numType> RH;
+    Expression<numType> derivative(const unsigned int &wrt)const{ return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*RH.derivative(wrt); }
+    numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));}
+};
+
+template<typename numType>
+class Power_num2: public AbstractExpression<numType>{ 
+    public:
+    Power_num2(const Expression<numType> &LH, const numType &RH):LH(LH),RH(RH){}
+    friend class Expression<numType>;
+    private:
+    
+    Expression<numType> LH;
+    numType RH;
+    Expression<numType> derivative(const unsigned int &wrt)const{ return pow( LH,RH - ONE<numType> )*RH*LH.derivative(wrt); }
+    numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
+};
+
+template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Power_expr<numType>(LH,RH)); 
+}
+template<typename numType> Expression<numType> pow(const numType &LH, const Expression<numType> &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Power_num1<numType>(LH,RH)); 
+}
+template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const numType &RH){
+    Simplifications
+    return AbsExp_ptr<numType>(new Power_num2<numType>(LH,RH)); 
+}
 
 }
 
+#undef Simplifications
 #endif
