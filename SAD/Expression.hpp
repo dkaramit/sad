@@ -56,6 +56,7 @@ class Expression{
 
     //if this instance is a variable, return its ID. If it is not, returns 0.
     IDType ID()const{ return expr_ptr->ID(); }
+    bool is_CONST()const{ return expr_ptr->is_CONST(); }
     
     //use to check if two expression are the same (correspond to the same address)
     bool Eq(const Expression<numType> &other)const{

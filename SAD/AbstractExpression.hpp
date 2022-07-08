@@ -27,6 +27,7 @@ class AbstractExpression{
     private:
     virtual numType evaluate(const map<IDType,numType> &)const=0;
     virtual Expression<numType> derivative(const IDType &)const=0;
+    virtual bool is_CONST()const=0;
     virtual IDType ID()const{return 0;}
 
 };
@@ -44,6 +45,8 @@ class Constant:public AbstractExpression<numType>{
     private:
     Constant(const numType &value):value(value){}
     Constant(numType &&value):value(value){}
+
+    bool is_CONST()const{return true;}
 
     numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
@@ -73,6 +76,7 @@ class Variable:public AbstractExpression<numType>{
 
     Expression<numType> derivative(const IDType &wrt)const{ return wrt == ID() ? ONE<numType> : ZERO<numType>; }
     IDType ID()const{return id;}
+    bool is_CONST()const{return false;}
 
     const IDType id;
     static IDType NumberOfVars;

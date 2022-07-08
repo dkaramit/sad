@@ -25,6 +25,7 @@ template<typename numType>
             return  LH.derivative(wrt)*RH + LH*RH.derivative(wrt);
         }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)*RH.evaluate(at);}
+        bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     };
 template<typename numType>
     class Multiplication_numL: public AbstractExpression<numType>{ 
@@ -36,6 +37,7 @@ template<typename numType>
         Expression<numType> RH;
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH*RH.derivative(wrt);}
         numType evaluate(const map<IDType,numType> &at)const{return LH*RH.evaluate(at);}
+        bool is_CONST()const{return RH.is_CONST();}
     };
 
 template<typename numType> Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){

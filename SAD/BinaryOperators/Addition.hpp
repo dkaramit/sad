@@ -6,7 +6,7 @@
 #include<SAD/BinaryOperators/Multiplication.hpp>
 #include<SAD/utilities.hpp>
 
-#define Simplifications if(is_ZERO(LH) and is_ZERO(RH)){return ZERO<numType>;} if(is_ZERO(LH)){return RH;} if(is_ZERO(RH)){return LH;} if(LH==RH){return TWO<numType>*LH;}
+#define Simplifications if(is_ZERO(LH) and is_ZERO(RH)){return ZERO<numType>;} if(is_ZERO(LH)){return RH;} if(is_ZERO(RH)){return LH;} 
 
 
 namespace sad{
@@ -20,6 +20,7 @@ template<typename numType>
         Expression<numType> LH,RH;
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt) + RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)+RH.evaluate(at);}
+        bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     };
 template<typename numType>
     class Addition_numL: public AbstractExpression<numType>{ 
@@ -31,11 +32,13 @@ template<typename numType>
         Expression<numType> RH;
         Expression<numType> derivative(const unsigned int &wrt)const{return  RH.derivative(wrt);}
         numType evaluate(const map<IDType,numType> &at)const{return LH+RH.evaluate(at);}
+        bool is_CONST()const{return RH.is_CONST();}
     };
 
 
 template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){
     Simplifications
+    if(LH==RH){return TWO<numType>*LH;}
     return AbsExp_ptr<numType>(new Addition_expr<numType>(LH,RH)); 
 }
 

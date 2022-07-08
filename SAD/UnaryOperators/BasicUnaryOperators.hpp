@@ -18,6 +18,7 @@ template<typename numType>\
             return  derivFunc_expr;\
         }\
         numType evaluate(const map<IDType,numType> &at)const{return evalFunc_expr;}\
+        bool is_CONST()const{return expr.is_CONST();}\
     };\
 template<typename numType>\
     class ClassName##_num: public AbstractExpression<numType>{ \
@@ -28,6 +29,7 @@ template<typename numType>\
         numType expr;\
         Expression<numType> derivative(const unsigned int &wrt)const{return  ZERO<numType>;}\
         numType evaluate(const map<IDType,numType> &at)const{return evalFunc_num;}\
+        bool is_CONST()const{return true;}\
     };\
 template<typename numType> Expression<numType> Operator(const Expression<numType> &expr){return AbsExp_ptr<numType>(new ClassName##_expr<numType>(expr)); }\
 template<typename numType> Expression<numType> Operator(const numType &x){return AbsExp_ptr<numType>(new ClassName##_num<numType>(x)); }
@@ -53,6 +55,7 @@ template<typename numType>
             return  -expr.derivative(wrt);
         }
         numType evaluate(const map<IDType,numType> &at)const{return -expr.evaluate(at);}
+        bool is_CONST()const{return expr.is_CONST();}
     };    
 template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){
     if(is_ZERO(expr)){return ZERO<numType>;}
