@@ -34,7 +34,7 @@ class Power_expr: public AbstractExpression<numType>{
     };
     numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
     bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
-
+    string head()const{return string("pow(") + str(LH) + string(",") + str(RH) + string(")");}
 };
 
 template<typename numType>
@@ -49,7 +49,7 @@ class Power_num1: public AbstractExpression<numType>{
     Expression<numType> derivative(const unsigned int &wrt)const{ return pow( LH,RH - ONE<numType> ) *   LH*log(LH)*RH.derivative(wrt); }
     numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH, RH.evaluate(at));}
     bool is_CONST()const{return RH.is_CONST();}
-
+    string head()const{return string("pow(") + str(LH) + string(",") + str(RH) + string(")");}
 };
 
 template<typename numType>
@@ -69,6 +69,7 @@ class Power_num2: public AbstractExpression<numType>{
     }
     numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
     bool is_CONST()const{return LH.is_CONST();}
+    string head()const{return string("pow(") + str(LH) + string(",") + str(RH) + string(")");}
 };
 
 template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){

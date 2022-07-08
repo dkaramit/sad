@@ -4,11 +4,14 @@
 #include <iostream>
 #include<memory>
 #include<map>
+#include<string>
 
 #define PPF std::cout<<__PRETTY_FUNCTION__<<"\n"
 
 namespace sad{
 using std::map;
+using std::string;
+using std::to_string;
 
 using IDType=unsigned int;
 
@@ -35,6 +38,9 @@ template<typename numType>static const auto SQRT_PI = Expression<numType>::const
 
 //you can use this to evaluate constants!
 template<typename numType>static const map<IDType,numType> empty_at;
+
+template<typename numType> auto str(const Expression<numType> &expr){return expr.head();}
+template<typename numType> auto str(const numType &x){return to_string(x);}
 
 }
 

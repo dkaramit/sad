@@ -21,6 +21,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return LH.derivative(wrt)/RH - LH/(RH*RH)*RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return  LH.evaluate(at)/RH.evaluate(at);}
         bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
+        string head()const{return str(LH) + string("/") + str(RH);}
     };
 template<typename numType>
     class Division_numL: public AbstractExpression<numType>{ 
@@ -33,7 +34,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  -LH/(RH*RH)*RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH/RH.evaluate(at);}
         bool is_CONST()const{return RH.is_CONST();}
-
+        string head()const{return str(LH) + string("/") + str(RH);}
     };
 template<typename numType>
     class Division_numR: public AbstractExpression<numType>{ 
@@ -46,6 +47,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt)/RH; }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)/RH;}
         bool is_CONST()const{return LH.is_CONST();}
+        string head()const{return str(LH) + string("/") + str(RH);}
     };
 
 

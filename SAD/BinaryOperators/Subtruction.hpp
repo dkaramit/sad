@@ -6,6 +6,7 @@
 #include<SAD/utilities.hpp>
 
 #include<SAD/BinaryOperators/Multiplication.hpp>
+#include<SAD/UnaryOperators/Negation.hpp>
 
 #define Simplifications if(is_ZERO(LH)){return -RH;} if(is_ZERO(RH)){return LH;}
 
@@ -23,6 +24,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return LH.derivative(wrt) - RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return  LH.evaluate(at)-RH.evaluate(at);}
         bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
+        string head()const{return str(LH) + string("-") + str(RH);}
     };
 template<typename numType>
     class Subtruction_numL: public AbstractExpression<numType>{ 
@@ -35,6 +37,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  -RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH-RH.evaluate(at);}
         bool is_CONST()const{return RH.is_CONST();}
+        string head()const{return str(LH) + string("-") + str(RH);}
     };
 template<typename numType>
     class Subtruction_numR: public AbstractExpression<numType>{ 
@@ -47,6 +50,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)-RH;}
         bool is_CONST()const{return LH.is_CONST();}
+        string head()const{return str(LH) + string("-") + str(RH);}
     };
 
 

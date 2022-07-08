@@ -65,14 +65,12 @@ class Expression{
     }
 
     //use to check if the instance is equal to ZERO
-    bool is_ZERO()const{
-        return this->Eq(ZERO<numType>);
-    }
+    bool is_ZERO()const{return this->Eq(ZERO<numType>);}
 
     //use to check if the instance is equal to ONE
-    bool is_ONE()const{
-        return this->Eq(ONE<numType>);
-    }
+    bool is_ONE()const{return this->Eq(ONE<numType>);}
+
+    string head()const{return expr_ptr->head();}
 
     private:
     AbsExp_ptr<numType> expr_ptr;

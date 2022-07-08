@@ -21,6 +21,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt) + RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)+RH.evaluate(at);}
         bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
+        string head()const{return str(LH) + string("+") + str(RH);}
     };
 template<typename numType>
     class Addition_numL: public AbstractExpression<numType>{ 
@@ -33,12 +34,13 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{return  RH.derivative(wrt);}
         numType evaluate(const map<IDType,numType> &at)const{return LH+RH.evaluate(at);}
         bool is_CONST()const{return RH.is_CONST();}
+        string head()const{return str(LH) + string("+") + str(RH);}
     };
 
 
 template<typename numType> Expression<numType> operator+(const Expression<numType> &LH, const Expression<numType> &RH){
+    if(RH.is_CONST()){return AbsExp_ptr<numType>(new Addition_expr<numType>(RH,LH));}
     Simplifications
-    if(LH==RH){return TWO<numType>*LH;}
     return AbsExp_ptr<numType>(new Addition_expr<numType>(LH,RH)); 
 }
 

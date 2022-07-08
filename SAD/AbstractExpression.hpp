@@ -7,6 +7,7 @@
 #include<valarray>
 #include<type_traits>
 #include<utility>
+#include<string>
 
 #include<SAD/misc.hpp>
 
@@ -30,6 +31,7 @@ class AbstractExpression{
     virtual bool is_CONST()const=0;
     virtual IDType ID()const{return 0;}
 
+    virtual string head()const{return "test";}
 };
 
 template<typename numType>
@@ -47,6 +49,8 @@ class Constant:public AbstractExpression<numType>{
     Constant(numType &&value):value(value){}
 
     bool is_CONST()const{return true;}
+    
+    string head()const{return to_string(value);}
 
     numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
@@ -77,6 +81,8 @@ class Variable:public AbstractExpression<numType>{
     Expression<numType> derivative(const IDType &wrt)const{ return wrt == ID() ? ONE<numType> : ZERO<numType>; }
     IDType ID()const{return id;}
     bool is_CONST()const{return false;}
+
+    string head()const{return string("var_") + std::to_string(id);}
 
     const IDType id;
     static IDType NumberOfVars;
