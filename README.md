@@ -12,7 +12,7 @@ There is one basic class: `sad::Expression<numType>`. The way instances are decl
 ```C++
 sad::Expression<double> x; 
 ```
-declares a variable that, when evaluated (see later), returns a double. 
+declares a variable that, when evaluated (see later), returns a double. We should note that the default templte argument is ```double```, so it may be omitted. Then, type-deduction allows us to skip *all* other template arguments.
 
 Declaring an instance as
 ```C++
@@ -67,4 +67,5 @@ Note: you only need to explicitely use a template parameter for variables. All o
 ## To-do:
 - [ ] Implement as many functions as possible.
 - [ ] Code generation for faster execution.
+- [ ] Use ```empty_at``` and ```is_CONST``` to eavaluate constants in order to simplify things.
 

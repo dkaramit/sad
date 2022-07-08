@@ -25,6 +25,11 @@ class Power_expr: public AbstractExpression<numType>{
         auto DRH=RH.derivative(wrt);
         auto DLH=LH.derivative(wrt);
 
+        //if the rhs is constant and rhs-1==0, then the result shou be 1
+        if(RH.is_CONST()){
+            if(RH.evaluate(empty_at<numType>) - static_cast<numType>(1) == static_cast<numType>(0)) {return ONE<numType>;}
+        }
+
         return pow( LH,RH - ONE<numType> ) * ( RH*DLH + LH*log(LH)*DRH ); 
     };
     numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH.evaluate(at));};
@@ -56,7 +61,12 @@ class Power_num2: public AbstractExpression<numType>{
     
     Expression<numType> LH;
     numType RH;
-    Expression<numType> derivative(const unsigned int &wrt)const{ return pow( LH,RH - ONE<numType> )*RH*LH.derivative(wrt); }
+    Expression<numType> derivative(const unsigned int &wrt)const{ 
+        //if rhs-1==0, then the result shou be 1
+        if(RH - static_cast<numType>(1) == static_cast<numType>(0)) {return ONE<numType>;}
+
+        return pow( LH,RH - ONE<numType> )*RH*LH.derivative(wrt); 
+    }
     numType evaluate(const map<IDType,numType> &at)const{return std::pow(LH.evaluate(at), RH);}
     bool is_CONST()const{return LH.is_CONST();}
 };

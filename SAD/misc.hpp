@@ -33,6 +33,8 @@ template<typename numType>static const auto PI      = Expression<numType>::const
 template<typename numType>static const auto PI2     = Expression<numType>::constant(M_PI*M_PI);
 template<typename numType>static const auto SQRT_PI = Expression<numType>::constant(2/M_2_SQRTPI);
 
+//you can use this to evaluate constants!
+template<typename numType>static const map<IDType,numType> empty_at;
 
 }
 
