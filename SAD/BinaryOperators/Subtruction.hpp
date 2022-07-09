@@ -24,7 +24,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return LH.derivative(wrt) - RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return  LH.evaluate(at)-RH.evaluate(at);}
         bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
-        string head()const{return str(LH) + string("-") + str(RH);}
+        string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     };
 template<typename numType>
     class Subtruction_numL: public AbstractExpression<numType>{ 
@@ -37,7 +37,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  -RH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH-RH.evaluate(at);}
         bool is_CONST()const{return RH.is_CONST();}
-        string head()const{return str(LH) + string("-") + str(RH);}
+        string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     };
 template<typename numType>
     class Subtruction_numR: public AbstractExpression<numType>{ 
@@ -50,7 +50,7 @@ template<typename numType>
         Expression<numType> derivative(const unsigned int &wrt)const{ return  LH.derivative(wrt); }
         numType evaluate(const map<IDType,numType> &at)const{return LH.evaluate(at)-RH;}
         bool is_CONST()const{return LH.is_CONST();}
-        string head()const{return str(LH) + string("-") + str(RH);}
+        string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     };
 
 

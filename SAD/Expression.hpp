@@ -70,7 +70,7 @@ class Expression{
     //use to check if the instance is equal to ONE
     bool is_ONE()const{return this->Eq(ONE<numType>);}
 
-    string head()const{return expr_ptr->head();}
+    string str()const{return expr_ptr->str();}
 
     private:
     AbsExp_ptr<numType> expr_ptr;
