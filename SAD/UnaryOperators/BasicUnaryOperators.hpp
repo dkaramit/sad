@@ -76,17 +76,6 @@ DefineUnaryOperatorClass(cos,Cos,
     std::cos(expr) 
 )
 
-DefineUnaryOperatorClass(log,Log,
-    std::log(expr.evaluate(at)),  
-    expr.derivative(wrt)/expr, 
-    std::log(expr) 
-)
-
-DefineUnaryOperatorClass(exp,Exp,
-    std::exp(expr.evaluate(at)), 
-    expr.derivative(wrt)*exp(expr), 
-    std::exp(expr)
-)
 
 DefineUnaryOperatorClass(tan,Tan,
     std::tan(expr.evaluate(at)), 

@@ -72,7 +72,7 @@ class Expression{
 
     string str()const{return expr_ptr->str();}
     string head()const{return expr_ptr->head();}
-    Expression<numType> subExpr(){return expr_ptr->subExpr();}
+    Expression<numType> subExpr()const{return expr_ptr->subExpr();}
     
     private:
     AbsExp_ptr<numType> expr_ptr;

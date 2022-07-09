@@ -8,14 +8,12 @@ using std::vector;
 
 int main(){
 
-    sad::Expression x,y;
-    sad::Expression z=log(x);
+    sad::Expression x;
 
-    std::map at=sad::at(std::vector{x,y},std::vector{0.325,3.}) ;
+    std::map at=sad::at(vector{x},vector{0.}) ;
 
 
-    cout<<z.subExpr().evaluate(at)<<"\n";
-
+    cout<< evaluate(derivative(exp(log(x)),x),at)  <<"\n";
 
     return 0;
 }

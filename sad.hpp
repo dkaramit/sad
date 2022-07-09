@@ -10,6 +10,8 @@
 #include<SAD/BinaryOperators/Power.hpp>
 
 #include<SAD/UnaryOperators/Negation.hpp>
+#include<SAD/UnaryOperators/Exp.hpp>
+#include<SAD/UnaryOperators/Log.hpp>
 #include<SAD/UnaryOperators/BasicUnaryOperators.hpp>
 
 

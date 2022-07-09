@@ -26,7 +26,7 @@ class Subtruction_expr: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     string head()const{return str();}
-    Expression<numType> subExpr(){return  LH-RH;}
+    Expression<numType> subExpr()const{return  LH-RH;}
 };
 template<typename numType>
 class Subtruction_numL: public AbstractExpression<numType>{ 
@@ -41,7 +41,7 @@ class Subtruction_numL: public AbstractExpression<numType>{
     bool is_CONST()const{return RH.is_CONST();}
     string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     string head()const{return str();}
-    Expression<numType> subExpr(){return  LH-RH;}
+    Expression<numType> subExpr()const{return  LH-RH;}
 };
 template<typename numType>
 class Subtruction_numR: public AbstractExpression<numType>{ 
@@ -56,7 +56,7 @@ class Subtruction_numR: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST();}
     string str()const{return print_expr(LH) + string("-") + print_expr(RH);}
     string head()const{return str();}
-    Expression<numType> subExpr(){return  LH-RH;}
+    Expression<numType> subExpr()const{return  LH-RH;}
 };
 
 
