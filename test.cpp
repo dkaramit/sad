@@ -8,18 +8,19 @@ using std::vector;
 
 int main(){
 
-    sad::Expression x;
+    sad::Expression x,y;
+    sad::Expression z=sin(x);
+    sad::Expression f;
 
     std::map at=sad::at(vector{x},vector{0.}) ;
 
-    /*exp(log(x)) is simplified to x*/
-    sad::Expression f0=exp(log(x));
-    sad::Expression f1=derivative(exp(log(x)),x);
-    sad::Expression f2=derivative(log(exp(x)),x);
+    for(int i=0; i<100; ++i){z=tanh(z/y+x);}
+    
+    f=derivative(z,x);
 
-    cout<< sad::print_expr(f0)<< "\t" << evaluate(f0,at)  <<"\n";
-    cout<< sad::print_expr(f1)<< "\t" << evaluate(f1,at)  <<"\n";
-    cout<< sad::print_expr(f2)<< "\t" << evaluate(f2,at)  <<"\n";
+    cout<<print_expr(z)<<"\n";
+    cout<<print_expr(f)<<"\n";
+
 
     return 0;
 }

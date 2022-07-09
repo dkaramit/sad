@@ -63,9 +63,10 @@ If we differentiate with respect to an expression, we get an expression that has
 
 Note: you only need to explicitely use a template parameter for variables. All other instances can deduct the type since `c++17`.
 
+## Code generation
+There are two function that can print expressions as functions or classes.
 
 ## To-do:
 - [ ] Implement as many functions as possible.
 - [ ] Code generation for faster execution.
-- [ ] Use ```empty_at``` and ```is_CONST``` to eavaluate constants in order to simplify things.
 
