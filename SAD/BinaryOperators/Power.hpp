@@ -36,6 +36,7 @@ class Power_expr: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     string str()const{return string("pow(") + print_expr(LH) + string(",") + print_expr(RH) + string(")");}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  pow(LH,RH);}
 };
 
 template<typename numType>
@@ -52,6 +53,7 @@ class Power_num1: public AbstractExpression<numType>{
     bool is_CONST()const{return RH.is_CONST();}
     string str()const{return string("pow(") + print_expr(LH) + string(",") + print_expr(RH) + string(")");}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  pow(LH,RH);}
 };
 
 template<typename numType>
@@ -73,6 +75,7 @@ class Power_num2: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST();}
     string str()const{return string("pow(") + print_expr(LH) + string(",") + print_expr(RH) + string(")");}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  pow(LH,RH);}
 };
 
 template<typename numType> Expression<numType> pow(const Expression<numType> &LH, const Expression<numType> &RH){

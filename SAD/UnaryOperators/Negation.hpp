@@ -25,6 +25,7 @@ template<typename numType>
         bool is_CONST()const{return expr.is_CONST();}
         string str()const{return string("-") + print_expr(expr);}
         string head()const{return string("-");}
+        Expression<numType> subExpr(){return expr;}
     };    
 template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){
     if(is_ZERO(expr)){return ZERO<numType>;}

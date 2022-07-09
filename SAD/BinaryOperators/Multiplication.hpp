@@ -26,6 +26,7 @@ class Multiplication_expr: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     string str()const{return print_expr(LH) + string("*") + print_expr(RH);}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  LH*RH;}
 };
 template<typename numType>
 class Multiplication_numL: public AbstractExpression<numType>{ 
@@ -40,6 +41,7 @@ class Multiplication_numL: public AbstractExpression<numType>{
     bool is_CONST()const{return RH.is_CONST();}
     string str()const{return print_expr(LH) + string("*") + print_expr(RH);}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  LH*RH;}
 };
 
 template<typename numType> Expression<numType> operator*(const Expression<numType> &LH, const Expression<numType> &RH){

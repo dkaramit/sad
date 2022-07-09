@@ -23,6 +23,7 @@ class Addition_expr: public AbstractExpression<numType>{
     bool is_CONST()const{return LH.is_CONST() and RH.is_CONST();}
     string str()const{return print_expr(LH) + string("+") + print_expr(RH);}
     string head()const{return str();}
+    Expression<numType> subExpr(){return  LH+RH;}
 };
 template<typename numType>
 class Addition_numL: public AbstractExpression<numType>{ 
@@ -35,8 +36,9 @@ class Addition_numL: public AbstractExpression<numType>{
     Expression<numType> derivative(const unsigned int &wrt)const{return  RH.derivative(wrt);}
     numType evaluate(const map<IDType,numType> &at)const{return LH+RH.evaluate(at);}
     bool is_CONST()const{return RH.is_CONST();}
-        string str()const{return print_expr(LH) + string("+") + print_expr(RH);}
-        string head()const{return str();}
+    string str()const{return print_expr(LH) + string("+") + print_expr(RH);}
+    string head()const{return str();}
+    Expression<numType> subExpr(){return  LH+RH;}
     };
 
 

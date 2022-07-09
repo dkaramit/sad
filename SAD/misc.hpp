@@ -14,6 +14,8 @@ using std::map;
 using std::vector;
 using std::string;
 using std::to_string;
+using std::shared_ptr;
+using std::make_shared;
 
 using IDType=unsigned int;
 
@@ -24,7 +26,7 @@ template<typename numType> class Variable;
 template<typename numType> class Expression;
 
 /*Alias for shared pointer to AbstractExpression*/
-template<typename numType> using AbsExp_ptr=std::shared_ptr<AbstractExpression<numType>>; 
+template<typename numType> using AbsExp_ptr=shared_ptr<AbstractExpression<numType>>; 
 
 
 

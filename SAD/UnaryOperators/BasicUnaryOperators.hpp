@@ -22,6 +22,7 @@ class ClassName##_expr: public AbstractExpression<numType>{ \
     bool is_CONST()const{return expr.is_CONST();}\
     string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
     string head()const{return string(#Operator);}\
+    Expression<numType> subExpr(){return expr;}\
 };\
 template<typename numType>\
 class ClassName##_num: public AbstractExpression<numType>{ \
@@ -35,6 +36,7 @@ class ClassName##_num: public AbstractExpression<numType>{ \
     bool is_CONST()const{return true;}\
     string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
     string head()const{return string(#Operator);}\
+    Expression<numType> subExpr(){return expr;}\
     };\
 template<typename numType> Expression<numType> Operator(const Expression<numType> &expr){return AbsExp_ptr<numType>(new ClassName##_expr<numType>(expr)); }\
 template<typename numType> Expression<numType> Operator(const numType &x){return AbsExp_ptr<numType>(new ClassName##_num<numType>(x)); }
