@@ -32,6 +32,7 @@ class AbstractExpression{
     virtual IDType ID()const{return 0;}
 
     virtual string str()const=0;
+    virtual string head()const=0;
 };
 
 template<typename numType>
@@ -51,6 +52,7 @@ class Constant:public AbstractExpression<numType>{
     bool is_CONST()const{return true;}
     
     string str()const{return to_string(value);}
+    string head()const{return str();}
 
     numType evaluate(const map<IDType,numType> &)const{return value;};
     Expression<numType> derivative(const IDType &wrt)const{ return ZERO<numType>; }
@@ -83,6 +85,7 @@ class Variable:public AbstractExpression<numType>{
     bool is_CONST()const{return false;}
 
     string str()const{return string("var_") + std::to_string(id);}
+    string head()const{return str();}
 
     const IDType id;
     static IDType NumberOfVars;

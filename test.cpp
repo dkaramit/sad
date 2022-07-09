@@ -8,17 +8,13 @@ using std::vector;
 
 int main(){
 
-    sad::Expression<long double> x,y;
-    sad::Expression z=x*y;
-    z=sin(z);
-    z=exp(z);
-
-    sad::Expression f=derivative(z,x,y);
-
-    cout<<sad::functions_generation(vector{x,y,x,x},vector{z,derivative(z,x),derivative(z,y),f})<<"\n";
+    sad::Expression x,y;
+    sad::Expression z=log(x);
 
 
-    cout<<sad::class_generation("Model",vector{y,x,z},vector{z,derivative(z,x),derivative(z,y),f})<<"\n";
-    
+    cout<<z.head()<<"\n";
+
+
+
     return 0;
 }

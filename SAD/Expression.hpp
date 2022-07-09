@@ -71,6 +71,7 @@ class Expression{
     bool is_ONE()const{return this->Eq(ONE<numType>);}
 
     string str()const{return expr_ptr->str();}
+    string head()const{return expr_ptr->head();}
 
     private:
     AbsExp_ptr<numType> expr_ptr;

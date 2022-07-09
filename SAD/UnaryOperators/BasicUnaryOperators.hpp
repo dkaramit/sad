@@ -8,31 +8,33 @@
 
 #define DefineUnaryOperatorClass(Operator,ClassName,evalFunc_expr,derivFunc_expr,evalFunc_num)\
 template<typename numType>\
-    class ClassName##_expr: public AbstractExpression<numType>{ \
-        public:\
-        ClassName##_expr(const Expression<numType> &expr):expr(expr){}\
-        friend class Expression<numType>;\
-        private:\
-        Expression<numType> expr;\
-        Expression<numType> derivative(const unsigned int &wrt)const{\
-            if(expr.is_ZERO()){return ZERO<numType>;}\
-            return  derivFunc_expr;\
-        }\
-        numType evaluate(const map<IDType,numType> &at)const{return evalFunc_expr;}\
-        bool is_CONST()const{return expr.is_CONST();}\
-        string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
-    };\
+class ClassName##_expr: public AbstractExpression<numType>{ \
+    public:\
+    ClassName##_expr(const Expression<numType> &expr):expr(expr){}\
+    friend class Expression<numType>;\
+    private:\
+    Expression<numType> expr;\
+    Expression<numType> derivative(const unsigned int &wrt)const{\
+        if(expr.is_ZERO()){return ZERO<numType>;}\
+        return  derivFunc_expr;\
+    }\
+    numType evaluate(const map<IDType,numType> &at)const{return evalFunc_expr;}\
+    bool is_CONST()const{return expr.is_CONST();}\
+    string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
+    string head()const{return string(#Operator);}\
+};\
 template<typename numType>\
-    class ClassName##_num: public AbstractExpression<numType>{ \
-        public:\
-        ClassName##_num(const numType &expr):expr(expr){}\
-        friend class Expression<numType>;\
-        private:\
-        numType expr;\
-        Expression<numType> derivative(const unsigned int &wrt)const{return  ZERO<numType>;}\
-        numType evaluate(const map<IDType,numType> &at)const{return evalFunc_num;}\
-        bool is_CONST()const{return true;}\
-        string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
+class ClassName##_num: public AbstractExpression<numType>{ \
+    public:\
+    ClassName##_num(const numType &expr):expr(expr){}\
+    friend class Expression<numType>;\
+    private:\
+    numType expr;\
+    Expression<numType> derivative(const unsigned int &wrt)const{return  ZERO<numType>;}\
+    numType evaluate(const map<IDType,numType> &at)const{return evalFunc_num;}\
+    bool is_CONST()const{return true;}\
+    string str()const{return string(#Operator) + string("(") + print_expr(expr) + string(")");}\
+    string head()const{return string(#Operator);}\
     };\
 template<typename numType> Expression<numType> Operator(const Expression<numType> &expr){return AbsExp_ptr<numType>(new ClassName##_expr<numType>(expr)); }\
 template<typename numType> Expression<numType> Operator(const numType &x){return AbsExp_ptr<numType>(new ClassName##_num<numType>(x)); }
