@@ -23,7 +23,7 @@ template<typename numType>
         }
         numType evaluate(const map<IDType,numType> &at)const{return -expr.evaluate(at);}
         bool is_CONST()const{return expr.is_CONST();}
-        string str()const{return string("-") + print_expr(expr);}
+        string str()const{return string("(") + string("-") + print_expr(expr) + string(")");}
     };    
 template<typename numType> Expression<numType> operator-(const Expression<numType> &expr){
     if(is_ZERO(expr)){return ZERO<numType>;}
