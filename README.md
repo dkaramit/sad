@@ -69,5 +69,5 @@ There are two function that can print expressions as functions or classes.
 ## To-do:
 - [ ] Implement as many functions as possible.
 - [ ] Code generation for faster execution.
-- [ ] Compute derivatives using caching.
+- [ ] Compute derivatives using backprop (and caching?).
 
