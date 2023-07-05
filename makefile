@@ -1,6 +1,6 @@
-reootDir="./"
+rootDir="./"
 
-IncludeDir="$(reootDir)"
+IncludeDir="$(rootDir)"
 IncludeHPP = $(shell find SAD/ -type f -name '*.hpp')
 
 CC=g++
