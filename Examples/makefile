@@ -9,7 +9,7 @@ OPT=-O3
 # STD=-std=c++14 #you need c++14 and above
 STD=-std=c++17
 
-FLG=-I$(IncludeDir) $(OPT) $(STD) -Wall
+FLG= -fsplit-stack -I$(IncludeDir) $(OPT) $(STD) -Wall
 
 EXE = $(shell find . -type f -name '*.cpp' | sed 's/\.cpp/.run/g' | sed 's/\.\///g')
 
